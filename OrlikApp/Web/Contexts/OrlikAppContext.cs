@@ -2,9 +2,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Web.BussinessLayer.Entities;
+using Web.Entities;
 
-namespace Web.BussinessLayer
+namespace Web.Contexts
 {
     public class OrlikAppContext : DbContext
     {
@@ -14,5 +14,6 @@ namespace Web.BussinessLayer
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Role> Roles { get; set; }
     }
 }

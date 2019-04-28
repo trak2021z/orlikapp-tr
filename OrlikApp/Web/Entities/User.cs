@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
-namespace Web.BussinessLayer.Entities
+namespace Web.Entities
 {
     public class User
     {
@@ -20,5 +20,9 @@ namespace Web.BussinessLayer.Entities
         [Required]
         [Column(TypeName = "nvarchar(120)")]
         public string Email { get; set; }
+
+        public int Number { get; set; }
+
+        public Role Role { get; set; }
     }
 }

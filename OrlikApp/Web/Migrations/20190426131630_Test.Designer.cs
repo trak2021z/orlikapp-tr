@@ -9,8 +9,8 @@ using Web.Contexts;
 namespace Web.Migrations
 {
     [DbContext(typeof(OrlikAppContext))]
-    [Migration("20190426125003_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20190426131630_Test")]
+    partial class Test
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -35,6 +35,8 @@ namespace Web.Migrations
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(60)");
+
+                    b.Property<int>("Number");
 
                     b.HasKey("Id");
 

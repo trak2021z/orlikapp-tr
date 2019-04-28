@@ -9,8 +9,8 @@ using Web.Contexts;
 namespace Web.Migrations
 {
     [DbContext(typeof(OrlikAppContext))]
-    [Migration("20190426125003_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20190426135838_User-Role3")]
+    partial class UserRole3
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -19,6 +19,20 @@ namespace Web.Migrations
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("Web.BussinessLayer.Entities.Role", b =>
+                {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Name")
+                        .HasColumnType("nvarchar(120)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
 
             modelBuilder.Entity("Web.BussinessLayer.Entities.User", b =>
                 {
@@ -35,6 +49,8 @@ namespace Web.Migrations
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(60)");
+
+                    b.Property<int>("Number");
 
                     b.HasKey("Id");
 
