@@ -17,6 +17,7 @@ namespace Web.Contexts
         public DbSet<Role> Roles { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Field> Fields { get; set; }
+        public DbSet<WorkingTime> WorkingTimes { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

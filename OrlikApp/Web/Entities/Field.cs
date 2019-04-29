@@ -25,9 +25,12 @@ namespace Web.Entities
 
         public Address Address { get; set; }
 
+        [Required]
         public User Keeper { get; set; }
 
-        // TODO: Godziny otwarcia, Zdjęcie, Com (co to?)
+        public IList<WorkingTime> WorkingTime { get; set; }
+
+        // TODO: Avatar
 
 
     }
