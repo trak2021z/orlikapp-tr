@@ -17,5 +17,12 @@ namespace Web.Contexts
         public DbSet<Role> Roles { get; set; }
         public DbSet<Address> Addresses { get; set; }
         public DbSet<Field> Fields { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<User>()
+                .HasIndex(p =>  p.Email)
+                .IsUnique(true);
+        }
     }
 }

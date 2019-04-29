@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web.Contexts;
 
 namespace Web.Migrations
 {
     [DbContext(typeof(OrlikAppContext))]
-    partial class OrlikAppContextModelSnapshot : ModelSnapshot
+    [Migration("20190429164149_UserRefactor")]
+    partial class UserRefactor
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -89,16 +91,12 @@ namespace Web.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<long?>("AddressId");
+                    b.Property<DateTime>("BirthDate")
+                        .HasColumnType("Date");
 
-                    b.Property<DateTime?>("BirthDate")
-                        .HasColumnType("date");
+                    b.Property<DateTime>("DateCreated");
 
-                    b.Property<DateTime?>("DateCreated")
-                        .HasColumnType("smalldatetime");
-
-                    b.Property<DateTime?>("DateModified")
-                        .HasColumnType("smalldatetime");
+                    b.Property<DateTime>("DateModified");
 
                     b.Property<string>("Email")
                         .IsRequired()
@@ -107,14 +105,14 @@ namespace Web.Migrations
                     b.Property<string>("FirstName")
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<int?>("Height");
+                    b.Property<int>("Height");
 
-                    b.Property<bool?>("IsRightFooted");
+                    b.Property<bool>("IsRightFooted");
 
                     b.Property<string>("LastName")
                         .HasColumnType("nvarchar(60)");
 
-                    b.Property<int?>("Number");
+                    b.Property<int>("Number");
 
                     b.Property<string>("Password")
                         .IsRequired()
@@ -125,11 +123,9 @@ namespace Web.Migrations
 
                     b.Property<long>("RoleId");
 
-                    b.Property<int?>("Weight");
+                    b.Property<int>("Weight");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("AddressId");
 
                     b.HasIndex("Email")
                         .IsUnique();
@@ -152,10 +148,6 @@ namespace Web.Migrations
 
             modelBuilder.Entity("Web.Entities.User", b =>
                 {
-                    b.HasOne("Web.Entities.Address", "Address")
-                        .WithMany()
-                        .HasForeignKey("AddressId");
-
                     b.HasOne("Web.Entities.Role", "Role")
                         .WithMany("Users")
                         .HasForeignKey("RoleId")

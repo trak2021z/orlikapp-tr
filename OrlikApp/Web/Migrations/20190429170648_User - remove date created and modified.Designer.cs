@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Web.Contexts;
 
 namespace Web.Migrations
 {
     [DbContext(typeof(OrlikAppContext))]
-    partial class OrlikAppContextModelSnapshot : ModelSnapshot
+    [Migration("20190429170648_User - remove date created and modified")]
+    partial class Userremovedatecreatedandmodified
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -93,12 +95,6 @@ namespace Web.Migrations
 
                     b.Property<DateTime?>("BirthDate")
                         .HasColumnType("date");
-
-                    b.Property<DateTime?>("DateCreated")
-                        .HasColumnType("smalldatetime");
-
-                    b.Property<DateTime?>("DateModified")
-                        .HasColumnType("smalldatetime");
 
                     b.Property<string>("Email")
                         .IsRequired()

@@ -6,6 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20190429161623_UserTest.cs" />
+    <Compile Remove="Migrations\20190429161623_UserTest.Designer.cs" />
+    <Compile Remove="Migrations\20190429165919_User - Modify date created and modified.cs" />
+    <Compile Remove="Migrations\20190429165919_User - Modify date created and modified.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="AutoMapper" Version="8.1.0" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.App" />
