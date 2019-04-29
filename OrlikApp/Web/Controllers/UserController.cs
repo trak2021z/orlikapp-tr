@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Web.Contexts;
 using Web.Entities;
+using Web.Models.User;
 using Web.Services;
 
 namespace Web.Controllers
@@ -16,17 +18,20 @@ namespace Web.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserRepository _userRepository;
+        private readonly IMapper _mapper;
 
-        public UserController(IUserRepository userRepository)
+        public UserController(IUserRepository userRepository,
+            IMapper mapper)
         {
             _userRepository = userRepository;
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult> GetList()
         {
             var userEntity = await _userRepository.GetListAsync();
-            return Ok(userEntity);
+            return Ok(_mapper.Map<IList<TestUserModel>>(userEntity));
         }
 
         //// GET: api/User/5
