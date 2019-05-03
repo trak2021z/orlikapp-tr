@@ -23,6 +23,7 @@ namespace Web.Entities
         [Column(TypeName = "nvarchar(500)")]
         public string Description { get; set; }
 
+
         public Address Address { get; set; }
 
         [Required]

@@ -14,6 +14,7 @@ using Microsoft.Extensions.Options;
 using Web.Contexts;
 using Web.Services;
 using AutoMapper;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace Web
 {
@@ -39,6 +40,8 @@ namespace Web
             services.AddDbContext<OrlikAppContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
 
+            services.AddSwaggerGen(c => c.SwaggerDoc("v1", new Info { Title = "OrlikApp API", Description = "Swagger OrlikApp API" }));
+
             services.AddScoped<IUserRepository, UserRepository>();
 
 
@@ -59,6 +62,9 @@ namespace Web
 
             app.UseHttpsRedirection();
             app.UseMvc();
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OrlikApp API"));
         }
     }
 }
