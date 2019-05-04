@@ -11,10 +11,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
-using Web.Contexts;
-using Web.Services;
+using BusinessLayer.Contexts;
 using AutoMapper;
 using Swashbuckle.AspNetCore.Swagger;
+using BusinessLayer.Services.Interfaces;
+using BusinessLayer.Services;
 
 namespace Web
 {
@@ -30,8 +31,6 @@ namespace Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddAutoMapper();
-
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             services.AddMvc()
@@ -40,6 +39,8 @@ namespace Web
 
             services.AddDbContext<OrlikAppContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
+
+            services.AddAutoMapper();
 
             services.AddSwaggerGen(c => 
                 c.SwaggerDoc("v1", new Info { Title = "OrlikApp API", Description = "Swagger OrlikApp API" }));

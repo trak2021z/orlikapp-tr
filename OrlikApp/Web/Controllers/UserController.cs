@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using BusinessLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Web.Contexts;
-using Web.Entities;
 using Web.Helpers;
+using Web.Helpers.Pagination;
 using Web.Models.User;
-using Web.Services;
 
 namespace Web.Controllers
 {
@@ -32,7 +31,7 @@ namespace Web.Controllers
         public async Task<ActionResult> GetPagedList([FromBody] UserSearchRequest request)
         {
             var userEntity = await _userRepository.GetPagedListAsync(request.Pager, request.RoleId, request.Name);
-            var userResult = new PaginationResult<UserListItem>
+            var userResult = new PagedResult<UserListItem>
             {
                 Items = _mapper.Map<IEnumerable<UserListItem>>(userEntity),
 
