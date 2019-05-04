@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessLayer.Models.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,6 +17,8 @@ namespace Web.Models.User
 
             CreateMap<BusinessLayer.Entities.User, UserListItem>()
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.Name));
+
+            CreateMap<UserSearchRequest, UserSearch>();
         }
     }
 }

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using BusinessLayer.Helpers.Pagination;
+using BusinessLayer.Models.User;
 using BusinessLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,14 +32,20 @@ namespace Web.Controllers
         [HttpPost]
         public async Task<ActionResult> GetPagedList([FromBody] UserSearchRequest request)
         {
-            var userEntity = await _userRepository.GetPagedListAsync(request.Pager, request.RoleId, request.Name);
-            var userResult = new PagedResult<UserListItem>
+            request.Pager = new Pager()
             {
-                Items = _mapper.Map<IEnumerable<UserListItem>>(userEntity),
-
+                Index = (request.Pager.Index <= 0) ? 1 : request.Pager.Index,
+                Size = (request.Pager.Size <= 0) ? 10 : request.Pager.Size
             };
 
-            return Ok(_mapper.Map<IList<UserSearchRequest>>(userEntity));
+            var userQuery = await _userRepository.GetPagedListAsync(_mapper.Map<UserSearch>(request));
+            var userResult = new PagedResult<UserListItem>
+            {
+                Items = _mapper.Map<IEnumerable<UserListItem>>(userQuery),
+                RowNumber = request.Pager.RowNumber
+            };
+
+            return Ok(userResult);
         }
 
         // GET: api/users/5

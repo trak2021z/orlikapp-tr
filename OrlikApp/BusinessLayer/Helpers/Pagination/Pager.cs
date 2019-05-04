@@ -9,6 +9,7 @@ namespace BusinessLayer.Helpers.Pagination
     {
         public int Index { get; set; }
         public int Size { get; set; }
-        public int Offset { get { return Index * Size; } }
+        public int Offset { get { return (Index - 1) * Size; } }
+        public int RowNumber { get; set; }
     }
 }

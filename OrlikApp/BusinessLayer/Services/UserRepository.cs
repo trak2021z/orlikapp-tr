@@ -7,6 +7,7 @@ using BusinessLayer.Contexts;
 using BusinessLayer.Entities;
 using BusinessLayer.Services.Interfaces;
 using BusinessLayer.Helpers.Pagination;
+using BusinessLayer.Models.User;
 
 namespace BusinessLayer.Services
 {
@@ -29,24 +30,27 @@ namespace BusinessLayer.Services
             return await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public async Task<IEnumerable<User>> GetPagedListAsync(Pager pager, long? roleId, string name = "")
+        public async Task<IEnumerable<User>> GetPagedListAsync(UserSearch search)
         {
-            var userEntity = await _context.Users.Include(u => u.Role).ToListAsync();
+            var query = await _context.Users.Include(u => u.Role).ToListAsync();
 
-            if (!String.IsNullOrEmpty(name))
+            if (!String.IsNullOrEmpty(search.Name))
             {
-                userEntity = userEntity.Where(u => u.Name.Contains(name)).ToList();
+                query = query.Where(u => u.Name.Contains(search.Name)).ToList();
             }
 
-            if (roleId != null)
+            if (search.RoleId != null)
             {
-                userEntity = userEntity.Where(u => u.Role.Id == roleId).ToList();
+                query = query.Where(u => u.Role.Id == search.RoleId).ToList();
             }
 
-            return userEntity
-                .OrderBy(u => u.Name)
-                .Skip(pager.Offset)
-                .Take(pager.Size);
+            search.Pager.RowNumber = query.Count;
+
+            return query
+                .OrderBy(u => u.LastName)
+                .ThenBy(u => u.FirstName)
+                .Skip(search.Pager.Offset)
+                .Take(search.Pager.Size);
         }
     }
 }
