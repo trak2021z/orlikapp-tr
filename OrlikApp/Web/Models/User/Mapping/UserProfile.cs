@@ -10,7 +10,11 @@ namespace Web.Models.User
     {
         public UserProfile()
         {
-            CreateMap<Entities.User, TestUserModel>()
+            CreateMap<Entities.User, UserDetailsResponse>()
+                .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => src.BirthDate.ToString()))
+                .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.Name));
+
+            CreateMap<Entities.User, UserListItem>()
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.Name));
         }
     }

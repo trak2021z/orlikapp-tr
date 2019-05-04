@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Web.Contexts;
 using Web.Entities;
+using Web.Helpers;
 using Web.Models.User;
 using Web.Services;
 
@@ -27,26 +27,33 @@ namespace Web.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public async Task<ActionResult> GetList()
+        // POST: api/users
+        [HttpPost]
+        public async Task<ActionResult> GetPagedList([FromBody] UserSearchRequest request)
         {
-            var userEntity = await _userRepository.GetListAsync();
-            return Ok(_mapper.Map<IList<TestUserModel>>(userEntity));
+            var userEntity = await _userRepository.GetPagedListAsync(request.Pager, request.RoleId, request.Name);
+            var userResult = new PaginationResult<UserListItem>
+            {
+                Items = _mapper.Map<IEnumerable<UserListItem>>(userEntity),
+
+            };
+
+            return Ok(_mapper.Map<IList<UserSearchRequest>>(userEntity));
         }
 
-        //// GET: api/User/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<User>> GetUser(long id)
-        //{
-        //    var user = await _context.Users.FindAsync(id);
+        // GET: api/users/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult> GetDetails(long id)
+        {
+            var user = await _userRepository.GetWithRoleAsync(id);
 
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-        //    return user;
-        //}
+            return Ok(_mapper.Map<UserDetailsResponse>(user));
+        }
 
         //// PUT: api/User/5
         //[HttpPut("{id}")]
