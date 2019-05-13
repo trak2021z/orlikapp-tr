@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using BusinessLayer.Entities.Enums;
+using BusinessLayer.Models.Enums;
 
 namespace BusinessLayer.Entities
 {
@@ -45,13 +45,22 @@ namespace BusinessLayer.Entities
         [Column(TypeName = "nvarchar(20)")]
         public string PhoneNumber { get; set; }
 
+        [Column(TypeName = "nvarchar(120)")]
+        public string Street { get; set; }
+
+        public int? StreetNumber { get; set; }
+
+        [Column(TypeName = "nvarchar(120)")]
+        public string City { get; set; }
+
+
         //TODO: Avatar
 
+        [Required]
+        public long RoleId { get; set; }
 
         [Required]
         public Role Role { get; set; }
-
-        public Address Address { get; set; }
 
         [NotMapped]
         public string Name

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using BusinessLayer.Entities;
 using BusinessLayer.Helpers.Pagination;
 using BusinessLayer.Models.User;
 using BusinessLayer.Services.Interfaces;
@@ -10,6 +11,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Web.Helpers;
 using Web.Helpers.Pagination;
+using Web.Models.Mapping;
 using Web.Models.User;
 
 namespace Web.Controllers
@@ -29,7 +31,7 @@ namespace Web.Controllers
         }
 
         // POST: api/users
-        [HttpPost]
+        [HttpPost("list")]
         public async Task<ActionResult> GetPagedList([FromBody] UserSearchRequest request)
         {
             request.Pager = new Pager()
@@ -38,14 +40,14 @@ namespace Web.Controllers
                 Size = (request.Pager.Size <= 0) ? 10 : request.Pager.Size
             };
 
-            var userQuery = await _userRepository.GetPagedListAsync(_mapper.Map<UserSearch>(request));
-            var userResult = new PagedResult<UserListItem>
+            var users = await _userRepository.GetPagedListAsync(_mapper.Map<UserSearch>(request));
+            var pagedResult = new PagedResult<UserListItem>
             {
-                Items = _mapper.Map<IEnumerable<UserListItem>>(userQuery),
+                Items = _mapper.Map<IEnumerable<UserListItem>>(users),
                 RowNumber = request.Pager.RowNumber
             };
 
-            return Ok(userResult);
+            return Ok(pagedResult);
         }
 
         // GET: api/users/5
@@ -53,7 +55,6 @@ namespace Web.Controllers
         public async Task<ActionResult> GetDetails(long id)
         {
             var user = await _userRepository.GetWithRoleAsync(id);
-
             if (user == null)
             {
                 return NotFound();
@@ -62,65 +63,58 @@ namespace Web.Controllers
             return Ok(_mapper.Map<UserDetailsResponse>(user));
         }
 
-        //// PUT: api/User/5
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> PutUser(long id, User user)
-        //{
-        //    if (id != user.Id)
-        //    {
-        //        return BadRequest();
-        //    }
+        // POST: api/users
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody]UserCreateRequest request)
+        {
+            try
+            {
+                var result = await _userRepository.Create(_mapper.Map<User>(request));
 
-        //    _context.Entry(user).State = EntityState.Modified;
+                return CreatedAtAction("GetDetails", new { id = result.Id }, result);
+            }
+            catch (UserException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
-        //    try
-        //    {
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (DbUpdateConcurrencyException)
-        //    {
-        //        if (!UserExists(id))
-        //        {
-        //            return NotFound();
-        //        }
-        //        else
-        //        {
-        //            throw;
-        //        }
-        //    }
+        // PUT: api/users
+        [HttpPut]
+        public async Task<IActionResult> Edit([FromBody]UserUpdateRequest request)
+        {
+            var user = await _userRepository.GetAsync(request.Id);
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-        //    return NoContent();
-        //}
+            try
+            {
+                var result = await _userRepository.Update(_mapper.Map<User>(request));
 
-        //// POST: api/User
-        //[HttpPost]
-        //public async Task<ActionResult<User>> PostUser(User user)
-        //{
-        //    _context.Users.Add(user);
-        //    await _context.SaveChangesAsync();
+                return CreatedAtAction("GetDetails", new { id = result.Id }, result);
+            }
+            catch (UserException e)
+            {
+                return BadRequest(e.Message);
+            }
+        }
 
-        //    return CreatedAtAction("GetUser", new { id = user.Id }, user);
-        //}
+        // DELETE: api/users/5
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<User>> Delete(long id)
+        {
+            var user = await _userRepository.GetAsync(id);
 
-        //// DELETE: api/User/5
-        //[HttpDelete("{id}")]
-        //public async Task<ActionResult<User>> DeleteUser(long id)
-        //{
-        //    var user = await _context.Users.FindAsync(id);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-        //    _context.Users.Remove(user);
-        //    await _context.SaveChangesAsync();
+            var result = await _userRepository.Remove(user);
 
-        //    return user;
-        //}
-
-        //private bool UserExists(long id)
-        //{
-        //    return _context.Users.Any(e => e.Id == id);
-        //}
+            return Ok(user);
+        }
     }
 }

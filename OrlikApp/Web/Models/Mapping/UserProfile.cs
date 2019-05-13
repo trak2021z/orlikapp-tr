@@ -4,8 +4,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Models.User;
 
-namespace Web.Models.User
+namespace Web.Models.Mapping
 {
     public class UserProfile : Profile
     {
@@ -19,6 +20,10 @@ namespace Web.Models.User
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.Name));
 
             CreateMap<UserSearchRequest, UserSearch>();
+
+            CreateMap<UserCreateRequest, BusinessLayer.Entities.User>();
+
+            CreateMap<UserUpdateRequest, BusinessLayer.Entities.User>();
         }
     }
 }

@@ -20,6 +20,10 @@ namespace BusinessLayer.Entities
         [Column(TypeName = "time(0)")]
         public TimeSpan? CloseHour { get; set; }
 
+
+        [Required]
+        public long FieldId { get; set; }
+
         [Required]
         public Field Field { get; set; }
     }

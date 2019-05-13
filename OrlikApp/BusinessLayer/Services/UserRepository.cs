@@ -22,17 +22,18 @@ namespace BusinessLayer.Services
 
         public async Task<User> GetAsync(long id)
         {
-            return await _context.Users.FirstOrDefaultAsync(u => u.Id == id);
+            return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<User> GetWithRoleAsync(long id)
         {
-            return await _context.Users.Include(u => u.Role).FirstOrDefaultAsync(u => u.Id == id);
+            return await _context.Users.AsNoTracking().Include(u => u.Role)
+                .FirstOrDefaultAsync(u => u.Id == id);
         }
 
         public async Task<IEnumerable<User>> GetPagedListAsync(UserSearch search)
         {
-            var query = await _context.Users.Include(u => u.Role).ToListAsync();
+            var query = await _context.Users.AsNoTracking().Include(u => u.Role).ToListAsync();
 
             if (!String.IsNullOrEmpty(search.Name))
             {
@@ -51,6 +52,76 @@ namespace BusinessLayer.Services
                 .ThenBy(u => u.FirstName)
                 .Skip(search.Pager.Offset)
                 .Take(search.Pager.Size);
+        }
+
+        public async Task<User> Create(User user)
+        {
+            try
+            {
+                var existingEmail = await _context.Users.AsNoTracking()
+                    .FirstOrDefaultAsync(u => u.Email == user.Email);
+
+                if (existingEmail != null)
+                {
+                    throw new UserException("Podany email jest już zajęty", UserError.EmailAlreadyExists);
+                }
+
+                user.DateCreated = DateTime.Now;
+                user.DateModified = DateTime.Now;
+
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+
+                return user;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public async Task<User> Update(User user)
+        {
+            try
+            {
+                var existingEmail = await _context.Users.AsNoTracking()
+                    .FirstOrDefaultAsync(u => u.Email == user.Email && u.Id != user.Id);
+
+                if (existingEmail != null)
+                {
+                    throw new UserException("Podany email jest już zajęty", UserError.EmailAlreadyExists);
+                }
+
+                var existingUser = await GetAsync(user.Id);
+
+                user.Password = existingUser.Password;
+                user.DateCreated = existingUser.DateCreated;
+                user.DateModified = DateTime.Now;
+
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+
+                return user;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+
+        public async Task<User> Remove(User user)
+        {
+            try
+            {
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
+
+                return user;
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
         }
     }
 }
