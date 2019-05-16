@@ -23,6 +23,10 @@ namespace BusinessLayer.Entities
 
         [Required]
         [Column(TypeName = "nvarchar(60)")]
+        public string Login { get; set; }
+
+        [Required]
+        [Column(TypeName = "nvarchar(60)")]
         public string Password { get; set; }
 
         [Column(TypeName = "smalldatetime")]

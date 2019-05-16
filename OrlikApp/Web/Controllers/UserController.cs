@@ -7,15 +7,18 @@ using BusinessLayer.Entities;
 using BusinessLayer.Helpers.Pagination;
 using BusinessLayer.Models.User;
 using BusinessLayer.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Web.Helpers;
 using Web.Helpers.Pagination;
+using Web.Models.Helpers;
 using Web.Models.Mapping;
 using Web.Models.User;
 
 namespace Web.Controllers
 {
+    [Authorize]
     [Route("api/users")]
     [ApiController]
     public class UserController : ControllerBase
@@ -75,7 +78,11 @@ namespace Web.Controllers
             }
             catch (UserException e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(new BadRequestModel
+                {
+                    Message = e.Message,
+                    ErrorCode = (int)e.ErrorCode
+                });
             }
         }
 
@@ -97,7 +104,11 @@ namespace Web.Controllers
             }
             catch (UserException e)
             {
-                return BadRequest(e.Message);
+                return BadRequest(new BadRequestModel
+                {
+                    Message = e.Message,
+                    ErrorCode = (int)e.ErrorCode
+                });
             }
         }
 

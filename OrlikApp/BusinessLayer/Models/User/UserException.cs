@@ -12,10 +12,5 @@ namespace BusinessLayer.Models.User
         {
             ErrorCode = errorCode;
         }
-
-        public new string ToString()
-        {
-            return "Error." + ErrorCode.ToString();
-        }
     }
 }
