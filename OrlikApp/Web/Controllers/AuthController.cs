@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 using BusinessLayer.Models.Auth;
 using BusinessLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Http;
@@ -16,10 +17,12 @@ namespace Web.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IMapper _mapper;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, IMapper mapper)
         {
             _authService = authService;
+            _mapper = mapper;
         }
 
         [HttpPost("login")]
@@ -32,11 +35,7 @@ namespace Web.Controllers
             }
             catch (AuthException e)
             {
-                return BadRequest(new BadRequestModel
-                {
-                    Message = e.Message,
-                    ErrorCode = (int)e.ErrorCode
-                });
+                return BadRequest(_mapper.Map<BadRequestModel>(e));
             }
         }
     }

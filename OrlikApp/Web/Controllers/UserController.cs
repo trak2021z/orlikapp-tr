@@ -78,11 +78,7 @@ namespace Web.Controllers
             }
             catch (UserException e)
             {
-                return BadRequest(new BadRequestModel
-                {
-                    Message = e.Message,
-                    ErrorCode = (int)e.ErrorCode
-                });
+                return BadRequest(_mapper.Map<BadRequestModel>(e));
             }
         }
 
@@ -104,11 +100,7 @@ namespace Web.Controllers
             }
             catch (UserException e)
             {
-                return BadRequest(new BadRequestModel
-                {
-                    Message = e.Message,
-                    ErrorCode = (int)e.ErrorCode
-                });
+                return BadRequest(_mapper.Map<BadRequestModel>(e));
             }
         }
 
