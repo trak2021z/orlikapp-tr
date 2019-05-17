@@ -9,9 +9,9 @@ Zrealizowane założenia:
 - Połącznie z bazą danych MSSQL Server przy pomocy Entity Framework Core (Code First)
 - Konfiguracja Automappera, Swaggera
 - Stworzenie szablonu projektu według standardu tworzenia aplikacji biznesowej
+- Przykładowy CRUD
+- Autentykacja przy pomocy JWT
 
 Rzeczy zaplanowane do zrobienia w najbliższym czasie:
-- Stworzenie CRUD'a
-- Logowanie do API
 - Obsługa obrazów
-- Połączenie API z widokiem w frameworku Vue.js
+- Połączenie API z widokiem w frameworku front-endowym
