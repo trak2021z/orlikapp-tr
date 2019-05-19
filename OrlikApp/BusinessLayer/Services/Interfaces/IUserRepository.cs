@@ -13,8 +13,9 @@ namespace BusinessLayer.Services.Interfaces
         Task<User> GetAsync(long id);
         Task<User> GetWithRoleAsync(long id);
         Task<IEnumerable<User>> GetPagedListAsync(UserSearch search);
-        Task<User> Create(User user);
+        Task<User> Create(User user, string password);
         Task<User> Update(User user);
         Task<User> Remove(User user);
+        Task CheckUniqueFieldsAsync(string login, string email, long id = 0);
     }
 }

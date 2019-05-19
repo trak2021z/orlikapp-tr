@@ -9,7 +9,7 @@ namespace Web.Models.User
 {
     public class UserCreateRequest : UserBaseRequest
     {
-        [Required]
+        [Required(ErrorMessage = " Hasło jest wymagane")]
         [StringLength(60, ErrorMessage = "Hasło jest zbyt długie")]
         [MinLength(6, ErrorMessage = "Hasło musi mieć przynajmniej 6 znaków")]
         public string Password { get; set; }

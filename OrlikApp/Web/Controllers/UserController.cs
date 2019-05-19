@@ -72,9 +72,8 @@ namespace Web.Controllers
         {
             try
             {
-                var result = await _userRepository.Create(_mapper.Map<User>(request));
-
-                return CreatedAtAction("GetDetails", new { id = result.Id }, result);
+                var result = await _userRepository.Create(_mapper.Map<User>(request), request.Password);
+                return CreatedAtAction("GetDetails", new { result.Id }, result);
             }
             catch (UserException e)
             {
@@ -95,8 +94,7 @@ namespace Web.Controllers
             try
             {
                 var result = await _userRepository.Update(_mapper.Map<User>(request));
-
-                return CreatedAtAction("GetDetails", new { id = result.Id }, result);
+                return CreatedAtAction("GetDetails", new { result.Id }, result);
             }
             catch (UserException e)
             {
@@ -116,7 +114,6 @@ namespace Web.Controllers
             }
 
             var result = await _userRepository.Remove(user);
-
             return Ok(user);
         }
     }

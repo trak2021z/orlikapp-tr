@@ -14,7 +14,12 @@ namespace Web.Models.User
         [StringLength(60, ErrorMessage = "Nazwisko jest zbyt długie")]
         public string LastName { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Nazwa użytkownika jest wymagana")]
+        [StringLength(60, ErrorMessage = "Login jest zbyt długi")]
+        public string Login { get; set; }
+
+        [Required(ErrorMessage = "Email jest wymagany")]
+        [EmailAddress(ErrorMessage = "Niepoprawny format adresu email")]
         [StringLength(250, ErrorMessage = "Email jest zbyt długi")]
         public string Email { get; set; }
 
@@ -31,7 +36,7 @@ namespace Web.Models.User
         [StringLength(20, ErrorMessage = "Numer telefonu jest zbyt długi")]
         public string PhoneNumber { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Rola jest wymagana")]
         public int RoleId { get; set; }
 
         [StringLength(120, ErrorMessage = "Nazwa ulicy jest zbyt długa")]

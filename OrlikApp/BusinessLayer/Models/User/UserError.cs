@@ -6,6 +6,7 @@ namespace BusinessLayer.Models.User
 {
     public enum UserError
     {
-        EmailAlreadyExists = 0
+        EmailAlreadyExists = 0,
+        LoginAlreadyExists = 1
     }
 }

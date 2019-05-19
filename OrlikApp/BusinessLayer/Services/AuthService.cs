@@ -3,6 +3,7 @@ using BusinessLayer.Entities;
 using BusinessLayer.Helpers;
 using BusinessLayer.Models.Auth;
 using BusinessLayer.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -11,6 +12,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace BusinessLayer.Services
 {
@@ -18,21 +20,36 @@ namespace BusinessLayer.Services
     {
         private readonly OrlikAppContext _context;
         private readonly TokenSettings _tokenSettings;
+        private readonly IUserRepository _userRepository;
+        private readonly IHashService _hashService;
 
-        public AuthService(OrlikAppContext context, IOptions<TokenSettings> tokenSettings)
+        public AuthService(
+            OrlikAppContext context, 
+            IOptions<TokenSettings> tokenSettings,
+            IUserRepository userRepository,
+            IHashService hashService)
         {
             _context = context;
             _tokenSettings = tokenSettings.Value;
+            _userRepository = userRepository;
+            _hashService = hashService;
         }
 
-        public string Authenticate(string login, string password)
+        public async Task<string> AuthenticateAsync(string login, string password)
         {
-            var user = _context.Users.FirstOrDefault(x => x.Login == login && x.Password == password);
+            var user = await _context.Users.AsNoTracking()
+                .FirstOrDefaultAsync(x => x.Login == login);
 
             if (user == null)
             {
-                throw new AuthException("Nieprawidłowa nazwa użytkownika lub hasło",
-                    AuthError.InvalidLoginOrPassword);
+                throw new AuthException("Nieprawidłowa nazwa użytkownika",
+                    AuthError.InvalidLogin);
+            }
+
+            if (!_hashService.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+            {
+                throw new AuthException("Nieprawidłowe hasło",
+                    AuthError.InvalidPassword);
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -51,5 +68,29 @@ namespace BusinessLayer.Services
 
             return tokenString;
         }
+
+        public async Task<User> RegisterUserAsync(string login, string password, string email)
+        {
+            await _userRepository.CheckUniqueFieldsAsync(login, email);
+
+            var user = new User
+            {
+                Login = login,
+                Email = email,
+                DateCreated = DateTime.Now,
+                DateModified = DateTime.Now,
+                RoleId = 2
+        };
+
+            _hashService.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
+
+            _context.Users.Add(user);
+            _context.SaveChanges();
+
+            return user;
+        }        
     }
 }

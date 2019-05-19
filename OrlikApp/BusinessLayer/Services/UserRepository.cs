@@ -14,10 +14,12 @@ namespace BusinessLayer.Services
     public class UserRepository : IUserRepository
     {
         private readonly OrlikAppContext _context;
+        private readonly IHashService _hashService;
 
-        public UserRepository(OrlikAppContext context)
+        public UserRepository(OrlikAppContext context, IHashService hashService)
         {
             _context = context;
+            _hashService = hashService;
         }
 
         public async Task<User> GetAsync(long id)
@@ -54,20 +56,19 @@ namespace BusinessLayer.Services
                 .Take(search.Pager.Size);
         }
 
-        public async Task<User> Create(User user)
+        public async Task<User> Create(User user, string password)
         {
             try
             {
-                var existingEmail = await _context.Users.AsNoTracking()
-                    .FirstOrDefaultAsync(u => u.Email == user.Email);
-
-                if (existingEmail != null)
-                {
-                    throw new UserException("Podany email jest już zajęty", UserError.EmailAlreadyExists);
-                }
+                await CheckUniqueFieldsAsync(user.Login, user.Email);
 
                 user.DateCreated = DateTime.Now;
                 user.DateModified = DateTime.Now;
+
+                _hashService.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
 
                 _context.Users.Add(user);
                 await _context.SaveChangesAsync();
@@ -84,17 +85,12 @@ namespace BusinessLayer.Services
         {
             try
             {
-                var existingEmail = await _context.Users.AsNoTracking()
-                    .FirstOrDefaultAsync(u => u.Email == user.Email && u.Id != user.Id);
-
-                if (existingEmail != null)
-                {
-                    throw new UserException("Podany email jest już zajęty", UserError.EmailAlreadyExists);
-                }
+                await CheckUniqueFieldsAsync(user.Login, user.Email, user.Id);
 
                 var existingUser = await GetAsync(user.Id);
 
-                user.Password = existingUser.Password;
+                user.PasswordHash = existingUser.PasswordHash;
+                user.PasswordSalt = existingUser.PasswordSalt;
                 user.DateCreated = existingUser.DateCreated;
                 user.DateModified = DateTime.Now;
 
@@ -121,6 +117,25 @@ namespace BusinessLayer.Services
             catch (Exception e)
             {
                 throw;
+            }
+        }
+
+        public async Task CheckUniqueFieldsAsync(string login, string email, long id = 0)
+        {
+            var emailExists = await _context.Users.AsNoTracking()
+                    .AnyAsync(u => u.Email == email && u.Id != id);
+
+            if (emailExists)
+            {
+                throw new UserException("Podany email jest już zajęty", UserError.EmailAlreadyExists);
+            }
+
+            var loginExists = await _context.Users.AsNoTracking()
+                .AnyAsync(u => u.Login == login && u.Id != id);
+
+            if (loginExists)
+            {
+                throw new UserException("Podana nazwa użytkownika jest już zajęta", UserError.EmailAlreadyExists);
             }
         }
     }

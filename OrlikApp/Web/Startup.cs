@@ -51,7 +51,7 @@ namespace Web
 
             // Swagger
             services.AddSwaggerGen(c => 
-                c.SwaggerDoc("v1", new Info { Title = "OrlikApp API", Description = "Swagger OrlikApp API" }));
+                c.SwaggerDoc("v5", new Info { Title = "OrlikApp API", Description = "Swagger OrlikApp API" }));
 
             #region JWT configuration
             var tokenSettingsSection = Configuration.GetSection("TokenSettings");
@@ -82,6 +82,7 @@ namespace Web
             // Bussiness servicess
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IHashService, HashService>();
 
 
         }
@@ -105,7 +106,7 @@ namespace Web
             app.UseMvc();
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OrlikApp API"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v5/swagger.json", "OrlikApp API"));
         }
     }
 }

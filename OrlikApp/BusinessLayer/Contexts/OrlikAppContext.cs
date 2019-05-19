@@ -23,6 +23,9 @@ namespace BusinessLayer.Contexts
             modelBuilder.Entity<User>()
                 .HasIndex(p =>  p.Email)
                 .IsUnique(true);
+            modelBuilder.Entity<User>()
+                .HasIndex(p => p.Login)
+                .IsUnique(true);
         }
     }
 }
