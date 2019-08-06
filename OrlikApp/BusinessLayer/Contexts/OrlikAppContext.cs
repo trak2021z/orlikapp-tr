@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using BusinessLayer.Entities;
+using BusinessLayer.Models.Enums;
 
 namespace BusinessLayer.Contexts
 {
@@ -26,6 +27,11 @@ namespace BusinessLayer.Contexts
             modelBuilder.Entity<User>()
                 .HasIndex(p => p.Login)
                 .IsUnique(true);
+            modelBuilder.Entity<Role>()
+                .HasData(
+                    new Role { Id = (long)RoleName.Admin, Name = "Admin" },
+                    new Role { Id = (long)RoleName.User, Name = "User" }
+                );
         }
     }
 }

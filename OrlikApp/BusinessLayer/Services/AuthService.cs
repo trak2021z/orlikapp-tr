@@ -2,6 +2,7 @@
 using BusinessLayer.Entities;
 using BusinessLayer.Helpers;
 using BusinessLayer.Models.Auth;
+using BusinessLayer.Models.Enums;
 using BusinessLayer.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
@@ -79,7 +80,7 @@ namespace BusinessLayer.Services
                 Email = email,
                 DateCreated = DateTime.Now,
                 DateModified = DateTime.Now,
-                RoleId = 2
+                RoleId = (long)RoleName.User
         };
 
             _hashService.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
