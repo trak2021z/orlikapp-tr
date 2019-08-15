@@ -37,23 +37,9 @@ namespace Web.Controllers
                                                      [FromQuery]int size)
         {
             var pager = new Pager(page, size);
+            var filter = new UserSearch(username, role);
 
-            var filter = new UserFilter();
-            filter.Login = username;
-            if (role != null)
-            {
-                switch (role.ToLower())
-                {
-                    case "admin":
-                        filter.RoleId = (int)RoleName.Admin;
-                        break;
-                    case "user":
-                        filter.RoleId = (int)RoleName.User;
-                        break;
-                }
-            }
-
-            var pagedDbUsers = await _userRepository.GetPagedList(_mapper.Map<UserSearch>(filter), pager);
+            var pagedDbUsers = await _userRepository.GetPagedList(filter, pager);
             var pagedResult = new PagedResult<UserListItem>
             {
                 Items = _mapper.Map<IEnumerable<UserListItem>>(pagedDbUsers.Items),
