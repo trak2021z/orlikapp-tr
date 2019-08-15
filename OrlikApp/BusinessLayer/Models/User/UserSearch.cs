@@ -7,8 +7,7 @@ namespace BusinessLayer.Models.User
 {
     public class UserSearch
     {
-        public Pager Pager { get; set; }
-        public string Name { get; set; }
+        public string Login { get; set; }
         public long? RoleId { get; set; }
     }
 }

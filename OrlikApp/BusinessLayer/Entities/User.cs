@@ -69,7 +69,14 @@ namespace BusinessLayer.Entities
         [NotMapped]
         public string Name
         {
-            get { return FirstName + " " + LastName; }
+            get
+            {
+                if (!string.IsNullOrEmpty(FirstName) || !string.IsNullOrEmpty(LastName))
+                {
+                    return FirstName + " " + LastName;
+                }
+                return string.Empty;
+            }
         }
     }
 }

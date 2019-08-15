@@ -7,10 +7,9 @@ using Web.Helpers;
 
 namespace Web.Models.User
 {
-    public class UserSearchRequest
+    public class UserFilter
     {
-        public Pager Pager { get; set; }
-        public string Name { get; set; }
+        public string Login { get; set; }
         public long? RoleId { get; set; }
     }
 }

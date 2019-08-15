@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLayer.Entities;
 using BusinessLayer.Helpers.Pagination;
+using BusinessLayer.Models.Enums;
 using BusinessLayer.Models.User;
 using BusinessLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -33,21 +34,34 @@ namespace Web.Controllers
             _mapper = mapper;
         }
 
-        // POST: api/users
-        [HttpPost("list")]
-        public async Task<ActionResult> GetPagedList([FromBody] UserSearchRequest request)
+        [HttpGet("list")]
+        public async Task<ActionResult> GetPagedList([FromQuery]string username,
+                                                     [FromQuery]string role, 
+                                                     [FromQuery]int page, 
+                                                     [FromQuery]int size)
         {
-            request.Pager = new Pager()
-            {
-                Index = (request.Pager.Index <= 0) ? 1 : request.Pager.Index,
-                Size = (request.Pager.Size <= 0) ? 10 : request.Pager.Size
-            };
+            var pager = new Pager(page, size);
 
-            var users = await _userRepository.GetPagedListAsync(_mapper.Map<UserSearch>(request));
+            var filter = new UserFilter();
+            filter.Login = username;
+            if (role != null)
+            {
+                switch (role.ToLower())
+                {
+                    case "admin":
+                        filter.RoleId = (int)RoleName.Admin;
+                        break;
+                    case "user":
+                        filter.RoleId = (int)RoleName.User;
+                        break;
+                }
+            }
+
+            var pagedDbUsers = await _userRepository.GetPagedListAsync(_mapper.Map<UserSearch>(filter), pager);
             var pagedResult = new PagedResult<UserListItem>
             {
-                Items = _mapper.Map<IEnumerable<UserListItem>>(users),
-                RowNumber = request.Pager.RowNumber
+                Items = _mapper.Map<IEnumerable<UserListItem>>(pagedDbUsers.Items),
+                RowNumber = pagedDbUsers.RowNumber
             };
 
             return Ok(pagedResult);

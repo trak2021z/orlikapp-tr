@@ -19,7 +19,7 @@ namespace Web.Models.Mapping
             CreateMap<BusinessLayer.Entities.User, UserListItem>()
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.Name));
 
-            CreateMap<UserSearchRequest, UserSearch>();
+            CreateMap<UserFilter, UserSearch>();
 
             CreateMap<UserCreateRequest, BusinessLayer.Entities.User>();
 

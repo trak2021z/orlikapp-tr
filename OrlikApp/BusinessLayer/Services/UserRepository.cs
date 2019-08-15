@@ -8,6 +8,7 @@ using BusinessLayer.Entities;
 using BusinessLayer.Services.Interfaces;
 using BusinessLayer.Helpers.Pagination;
 using BusinessLayer.Models.User;
+using Web.Helpers.Pagination;
 
 namespace BusinessLayer.Services
 {
@@ -33,27 +34,33 @@ namespace BusinessLayer.Services
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
 
-        public async Task<IEnumerable<User>> GetPagedListAsync(UserSearch search)
+        public async Task<PagedResult<User>> GetPagedListAsync(UserSearch search, Pager pager)
         {
-            var query = await _context.Users.AsNoTracking().Include(u => u.Role).ToListAsync();
+            var users = await _context.Users.Include(u => u.Role).ToListAsync();
+            var query = users.AsEnumerable();
 
-            if (!String.IsNullOrEmpty(search.Name))
+            if (!string.IsNullOrEmpty(search.Login))
             {
-                query = query.Where(u => u.Name.Contains(search.Name)).ToList();
+                query = query.Where(u => u.Login.Contains(search.Login));
             }
 
             if (search.RoleId != null)
             {
-                query = query.Where(u => u.Role.Id == search.RoleId).ToList();
+                query = query.Where(u => u.Role.Id == search.RoleId);
             }
 
-            search.Pager.RowNumber = query.Count;
-
-            return query
+            var resultList = query
                 .OrderBy(u => u.LastName)
                 .ThenBy(u => u.FirstName)
-                .Skip(search.Pager.Offset)
-                .Take(search.Pager.Size);
+                .ToList();
+
+            var pagedList = new PagedResult<User>
+            {
+                Items = resultList.Skip(pager.Offset).Take(pager.Size),
+                RowNumber = resultList.Count
+            };
+
+            return pagedList;
         }
 
         public async Task<User> Create(User user, string password)
