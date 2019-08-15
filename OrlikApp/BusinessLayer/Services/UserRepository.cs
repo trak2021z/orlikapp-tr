@@ -23,18 +23,23 @@ namespace BusinessLayer.Services
             _hashService = hashService;
         }
 
-        public async Task<User> GetAsync(long id)
+        #region Get()
+        public async Task<User> Get(long id)
         {
             return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
         }
+        #endregion
 
-        public async Task<User> GetWithRoleAsync(long id)
+        #region GetWithRole()
+        public async Task<User> GetWithRole(long id)
         {
             return await _context.Users.AsNoTracking().Include(u => u.Role)
                 .FirstOrDefaultAsync(u => u.Id == id);
         }
+        #endregion
 
-        public async Task<PagedResult<User>> GetPagedListAsync(UserSearch search, Pager pager)
+        #region GetPagedList()
+        public async Task<PagedResult<User>> GetPagedList(UserSearch search, Pager pager)
         {
             var users = await _context.Users.Include(u => u.Role).ToListAsync();
             var query = users.AsEnumerable();
@@ -62,12 +67,14 @@ namespace BusinessLayer.Services
 
             return pagedList;
         }
+        #endregion
 
+        #region Create()
         public async Task<User> Create(User user, string password)
         {
             try
             {
-                await CheckUniqueFieldsAsync(user.Login, user.Email);
+                await CheckUniqueFields(user.Login, user.Email);
 
                 user.DateCreated = DateTime.Now;
                 user.DateModified = DateTime.Now;
@@ -87,14 +94,16 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
+        #endregion
 
+        #region Update()
         public async Task<User> Update(User user)
         {
             try
             {
-                await CheckUniqueFieldsAsync(user.Login, user.Email, user.Id);
+                await CheckUniqueFields(user.Login, user.Email, user.Id);
 
-                var existingUser = await GetAsync(user.Id);
+                var existingUser = await Get(user.Id);
 
                 user.PasswordHash = existingUser.PasswordHash;
                 user.PasswordSalt = existingUser.PasswordSalt;
@@ -111,7 +120,9 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
+        #endregion
 
+        #region Remove()
         public async Task<User> Remove(User user)
         {
             try
@@ -126,8 +137,10 @@ namespace BusinessLayer.Services
                 throw;
             }
         }
+        #endregion
 
-        public async Task CheckUniqueFieldsAsync(string login, string email, long id = 0)
+        #region CheckUniqueFields()
+        public async Task CheckUniqueFields(string login, string email, long id = 0)
         {
             var emailExists = await _context.Users.AsNoTracking()
                     .AnyAsync(u => u.Email == email && u.Id != id);
@@ -145,5 +158,6 @@ namespace BusinessLayer.Services
                 throw new UserException("Podana nazwa użytkownika jest już zajęta", UserError.EmailAlreadyExists);
             }
         }
+        #endregion
     }
 }

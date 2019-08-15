@@ -11,12 +11,12 @@ namespace BusinessLayer.Services.Interfaces
 {
     public interface IUserRepository
     {
-        Task<User> GetAsync(long id);
-        Task<User> GetWithRoleAsync(long id);
-        Task<PagedResult<User>> GetPagedListAsync(UserSearch search, Pager pager);
+        Task<User> Get(long id);
+        Task<User> GetWithRole(long id);
+        Task<PagedResult<User>> GetPagedList(UserSearch search, Pager pager);
         Task<User> Create(User user, string password);
         Task<User> Update(User user);
         Task<User> Remove(User user);
-        Task CheckUniqueFieldsAsync(string login, string email, long id = 0);
+        Task CheckUniqueFields(string login, string email, long id = 0);
     }
 }

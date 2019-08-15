@@ -1,20 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
+﻿using AutoMapper;
 using BusinessLayer.Entities;
 using BusinessLayer.Helpers.Pagination;
 using BusinessLayer.Models.Enums;
 using BusinessLayer.Models.User;
 using BusinessLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Web.Helpers;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Web.Helpers.Pagination;
 using Web.Models.Helpers;
-using Web.Models.Mapping;
 using Web.Models.User;
 
 namespace Web.Controllers
@@ -34,6 +29,7 @@ namespace Web.Controllers
             _mapper = mapper;
         }
 
+        #region List()
         [HttpGet("list")]
         public async Task<ActionResult> GetPagedList([FromQuery]string username,
                                                      [FromQuery]string role, 
@@ -57,7 +53,7 @@ namespace Web.Controllers
                 }
             }
 
-            var pagedDbUsers = await _userRepository.GetPagedListAsync(_mapper.Map<UserSearch>(filter), pager);
+            var pagedDbUsers = await _userRepository.GetPagedList(_mapper.Map<UserSearch>(filter), pager);
             var pagedResult = new PagedResult<UserListItem>
             {
                 Items = _mapper.Map<IEnumerable<UserListItem>>(pagedDbUsers.Items),
@@ -66,12 +62,14 @@ namespace Web.Controllers
 
             return Ok(pagedResult);
         }
+        #endregion
 
+        #region  GetDetails()
         // GET: api/users/5
         [HttpGet("{id}")]
         public async Task<ActionResult> GetDetails(long id)
         {
-            var user = await _userRepository.GetWithRoleAsync(id);
+            var user = await _userRepository.GetWithRole(id);
             if (user == null)
             {
                 return NotFound();
@@ -79,7 +77,9 @@ namespace Web.Controllers
 
             return Ok(_mapper.Map<UserDetailsResponse>(user));
         }
+        #endregion
 
+        #region Add()
         // POST: api/users
         [HttpPost]
         public async Task<ActionResult> Add([FromBody]UserCreateRequest request)
@@ -94,12 +94,14 @@ namespace Web.Controllers
                 return BadRequest(_mapper.Map<BadRequestModel>(e));
             }
         }
+        #endregion
 
+        #region Edit()
         // PUT: api/users
         [HttpPut]
         public async Task<IActionResult> Edit([FromBody]UserUpdateRequest request)
         {
-            var user = await _userRepository.GetAsync(request.Id);
+            var user = await _userRepository.Get(request.Id);
             if (user == null)
             {
                 return NotFound();
@@ -115,12 +117,14 @@ namespace Web.Controllers
                 return BadRequest(_mapper.Map<BadRequestModel>(e));
             }
         }
+        #endregion
 
+        #region Delete()
         // DELETE: api/users/5
         [HttpDelete("{id}")]
         public async Task<ActionResult<User>> Delete(long id)
         {
-            var user = await _userRepository.GetAsync(id);
+            var user = await _userRepository.Get(id);
 
             if (user == null)
             {
@@ -130,5 +134,6 @@ namespace Web.Controllers
             var result = await _userRepository.Remove(user);
             return Ok(user);
         }
+        #endregion
     }
 }

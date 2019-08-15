@@ -31,8 +31,6 @@ namespace BusinessLayer.Entities
         [Column(TypeName = "nvarchar(120)")]
         public string City { get; set; }
 
-
-
         [Required]
         public User Keeper { get; set; }
 

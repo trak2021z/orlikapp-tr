@@ -7,6 +7,7 @@ namespace BusinessLayer.Services
 {
     public class HashService : IHashService
     {
+        #region CreatePasswordHash()
         public void CreatePasswordHash(string password, out byte[] passwordHash, out byte[] passwordSalt)
         {
             if (password == null || String.IsNullOrWhiteSpace(password))
@@ -20,7 +21,9 @@ namespace BusinessLayer.Services
                 passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
             }
         }
+        #endregion
 
+        #region VerifyPasswordHash()
         public bool VerifyPasswordHash(string password, byte[] storedHash, byte[] storedSalt)
         {
             if (password == null || String.IsNullOrWhiteSpace(password))
@@ -47,5 +50,6 @@ namespace BusinessLayer.Services
 
             return true;
         }
+        #endregion
     }
 }

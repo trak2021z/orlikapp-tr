@@ -36,7 +36,8 @@ namespace BusinessLayer.Services
             _hashService = hashService;
         }
 
-        public async Task<string> AuthenticateAsync(string login, string password)
+        #region Authenticate()
+        public async Task<string> Authenticate(string login, string password)
         {
             var user = await _context.Users.AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Login == login);
@@ -69,10 +70,12 @@ namespace BusinessLayer.Services
 
             return tokenString;
         }
+        #endregion
 
-        public async Task<User> RegisterUserAsync(string login, string password, string email)
+        #region RegisterUser()
+        public async Task<User> RegisterUser(string login, string password, string email)
         {
-            await _userRepository.CheckUniqueFieldsAsync(login, email);
+            await _userRepository.CheckUniqueFields(login, email);
 
             var user = new User
             {
@@ -81,7 +84,7 @@ namespace BusinessLayer.Services
                 DateCreated = DateTime.Now,
                 DateModified = DateTime.Now,
                 RoleId = (long)RoleName.User
-        };
+            };
 
             _hashService.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
@@ -92,6 +95,7 @@ namespace BusinessLayer.Services
             _context.SaveChanges();
 
             return user;
-        }        
+        }
+        #endregion
     }
 }

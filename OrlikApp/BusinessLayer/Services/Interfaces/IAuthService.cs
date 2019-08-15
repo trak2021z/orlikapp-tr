@@ -8,7 +8,7 @@ namespace BusinessLayer.Services.Interfaces
 {
     public interface IAuthService
     {
-        Task<string> AuthenticateAsync(string login, string password);
-        Task<User> RegisterUserAsync(string login, string password, string email);
+        Task<string> Authenticate(string login, string password);
+        Task<User> RegisterUser(string login, string password, string email);
     }
 }
