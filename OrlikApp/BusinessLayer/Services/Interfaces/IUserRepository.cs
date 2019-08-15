@@ -15,7 +15,7 @@ namespace BusinessLayer.Services.Interfaces
         Task<User> GetWithRole(long id);
         Task<PagedResult<User>> GetPagedList(UserSearch search, Pager pager);
         Task<User> Create(User user, string password);
-        Task<User> Update(User user);
+        Task<User> Update(long id, User user);
         Task<User> Remove(User user);
         Task CheckUniqueFields(string login, string email, long id = 0);
     }

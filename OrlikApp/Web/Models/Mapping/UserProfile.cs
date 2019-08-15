@@ -23,7 +23,9 @@ namespace Web.Models.Mapping
 
             CreateMap<UserCreateRequest, BusinessLayer.Entities.User>();
 
-            CreateMap<UserUpdateRequest, BusinessLayer.Entities.User>();
+            CreateMap<UserBaseRequest, BusinessLayer.Entities.User>();
+
+            CreateMap<BusinessLayer.Entities.User, UserUpdateResponse>();
         }
     }
 }

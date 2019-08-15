@@ -97,14 +97,15 @@ namespace BusinessLayer.Services
         #endregion
 
         #region Update()
-        public async Task<User> Update(User user)
+        public async Task<User> Update(long id, User user)
         {
             try
             {
-                await CheckUniqueFields(user.Login, user.Email, user.Id);
+                await CheckUniqueFields(user.Login, user.Email, id);
 
-                var existingUser = await Get(user.Id);
+                var existingUser = await Get(id);
 
+                user.Id = existingUser.Id;
                 user.PasswordHash = existingUser.PasswordHash;
                 user.PasswordSalt = existingUser.PasswordSalt;
                 user.DateCreated = existingUser.DateCreated;

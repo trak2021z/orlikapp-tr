@@ -66,7 +66,7 @@ namespace Web.Controllers
 
         #region  GetDetails()
         // GET: api/users/5
-        [HttpGet("{id}")]
+        [HttpGet("{id:long}")]
         public async Task<ActionResult> GetDetails(long id)
         {
             var user = await _userRepository.GetWithRole(id);
@@ -86,8 +86,10 @@ namespace Web.Controllers
         {
             try
             {
-                var result = await _userRepository.Create(_mapper.Map<User>(request), request.Password);
-                return CreatedAtAction("GetDetails", new { result.Id }, result);
+                var createdDbUser = await _userRepository.Create(_mapper.Map<User>(request), request.Password);
+                return CreatedAtAction("GetDetails",
+                    new { createdDbUser.Id },
+                    new { createdDbUser.Id, createdDbUser.Login });
             }
             catch (UserException e)
             {
@@ -98,10 +100,10 @@ namespace Web.Controllers
 
         #region Edit()
         // PUT: api/users
-        [HttpPut]
-        public async Task<IActionResult> Edit([FromBody]UserUpdateRequest request)
+        [HttpPut("{id:long}")]
+        public async Task<ActionResult> Edit(long id, [FromBody]UserBaseRequest request)
         {
-            var user = await _userRepository.Get(request.Id);
+            var user = await _userRepository.Get(id);
             if (user == null)
             {
                 return NotFound();
@@ -109,8 +111,10 @@ namespace Web.Controllers
 
             try
             {
-                var result = await _userRepository.Update(_mapper.Map<User>(request));
-                return CreatedAtAction("GetDetails", new { result.Id }, result);
+                var updatedDbUser = await _userRepository.Update(id, _mapper.Map<User>(request));
+                var result = _mapper.Map<UserUpdateResponse>(updatedDbUser);
+
+                return Ok(result);
             }
             catch (UserException e)
             {
@@ -125,14 +129,13 @@ namespace Web.Controllers
         public async Task<ActionResult<User>> Delete(long id)
         {
             var user = await _userRepository.Get(id);
-
             if (user == null)
             {
                 return NotFound();
             }
 
             var result = await _userRepository.Remove(user);
-            return Ok(user);
+            return Ok();
         }
         #endregion
     }
