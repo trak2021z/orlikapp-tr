@@ -20,6 +20,7 @@ using BusinessLayer.Helpers;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Mvc.Cors.Internal;
 
 namespace Web
 {
@@ -35,6 +36,12 @@ namespace Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            // CORS
+            services.AddCors(options => options.AddPolicy("LocalhostPolicy", builder =>
+            {
+                builder.WithOrigins("http://localhost:8080").AllowAnyMethod().AllowAnyHeader();
+            }));
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // ReferenceLoopHandling
@@ -102,11 +109,13 @@ namespace Web
 
             app.UseAuthentication();
 
+            app.UseCors("LocalhostPolicy");
+
             app.UseHttpsRedirection();
             app.UseMvc();
 
             app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v5/swagger.json", "OrlikApp API"));
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "OrlikApp API"));
         }
     }
 }

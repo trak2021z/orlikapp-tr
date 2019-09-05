@@ -12,10 +12,14 @@ namespace Web.Models.Auth
         [StringLength(60, ErrorMessage = "Login jest zbyt długi")]
         public string Login { get; set; }
 
-        [Required(ErrorMessage = " Hasło jest wymagane")]
+        [Required(ErrorMessage = "Hasło jest wymagane")]
         [StringLength(60, ErrorMessage = "Hasło jest zbyt długie")]
         [MinLength(6, ErrorMessage = "Hasło musi mieć przynajmniej 6 znaków")]
         public string Password { get; set; }
+
+        [Required(ErrorMessage = "Hasło jest wymagane")]
+        [Compare("Password", ErrorMessage = "Hasła muszą być identyczne")]
+        public string RepeatedPassword { get; set; }
 
         [Required(ErrorMessage = "Email jest wymagany")]
         [EmailAddress(ErrorMessage = "Niepoprawny format adresu email")]

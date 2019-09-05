@@ -41,102 +41,88 @@ namespace BusinessLayer.Services
         #region GetPagedList()
         public async Task<PagedResult<User>> GetPagedList(UserSearch search, Pager pager)
         {
-            var users = await _context.Users.Include(u => u.Role).ToListAsync();
-            var query = users.AsEnumerable();
-
-            if (!string.IsNullOrEmpty(search.Login))
+            try
             {
-                query = query.Where(u => u.Login.Contains(search.Login));
+                var users = await _context.Users.Include(u => u.Role).ToListAsync();
+                var query = users.AsEnumerable();
+
+                if (!string.IsNullOrEmpty(search.Login))
+                {
+                    query = query.Where(u => u.Login.Contains(search.Login));
+                }
+
+                if (search.RoleId != null)
+                {
+                    query = query.Where(u => u.Role.Id == search.RoleId);
+                }
+
+                var resultList = query
+                    .OrderBy(u => u.LastName)
+                    .ThenBy(u => u.FirstName)
+                    .ToList();
+
+                var pagedList = new PagedResult<User>
+                {
+                    Items = resultList.Skip(pager.Offset).Take(pager.Size),
+                    RowNumber = resultList.Count
+                };
+
+                return pagedList;
             }
-
-            if (search.RoleId != null)
+            catch (Exception)
             {
-                query = query.Where(u => u.Role.Id == search.RoleId);
+                throw;
             }
-
-            var resultList = query
-                .OrderBy(u => u.LastName)
-                .ThenBy(u => u.FirstName)
-                .ToList();
-
-            var pagedList = new PagedResult<User>
-            {
-                Items = resultList.Skip(pager.Offset).Take(pager.Size),
-                RowNumber = resultList.Count
-            };
-
-            return pagedList;
         }
         #endregion
 
         #region Create()
         public async Task<User> Create(User user, string password)
         {
-            try
-            {
-                await CheckUniqueFields(user.Login, user.Email);
+            await CheckUniqueFields(user.Login, user.Email);
 
-                user.DateCreated = DateTime.Now;
-                user.DateModified = DateTime.Now;
+            user.DateCreated = DateTime.Now;
+            user.DateModified = DateTime.Now;
 
-                _hashService.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+            _hashService.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
-                user.PasswordHash = passwordHash;
-                user.PasswordSalt = passwordSalt;
+            user.PasswordHash = passwordHash;
+            user.PasswordSalt = passwordSalt;
 
-                _context.Users.Add(user);
-                await _context.SaveChangesAsync();
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
 
-                return user;
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
+            return user;
         }
         #endregion
 
         #region Update()
         public async Task<User> Update(long id, User user)
         {
-            try
-            {
-                await CheckUniqueFields(user.Login, user.Email, id);
+            await CheckUniqueFields(user.Login, user.Email, id);
 
-                var existingUser = await Get(id);
+            var existingUser = await Get(id);
 
-                user.Id = existingUser.Id;
-                user.PasswordHash = existingUser.PasswordHash;
-                user.PasswordSalt = existingUser.PasswordSalt;
-                user.DateCreated = existingUser.DateCreated;
-                user.DateModified = DateTime.Now;
+            user.Id = existingUser.Id;
+            user.PasswordHash = existingUser.PasswordHash;
+            user.PasswordSalt = existingUser.PasswordSalt;
+            user.DateCreated = existingUser.DateCreated;
+            user.DateModified = DateTime.Now;
 
-                _context.Users.Update(user);
-                await _context.SaveChangesAsync();
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
 
-                return user;
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
+            return user;
         }
         #endregion
 
         #region Remove()
         public async Task<User> Remove(User user)
         {
-            try
-            {
-                _context.Users.Remove(user);
-                await _context.SaveChangesAsync();
+            _context.Users.Remove(user);
+            await _context.SaveChangesAsync();
 
-                return user;
-            }
-            catch (Exception e)
-            {
-                throw;
-            }
+            return user;
         }
         #endregion
 

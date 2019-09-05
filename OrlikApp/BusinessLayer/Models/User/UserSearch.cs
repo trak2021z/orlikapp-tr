@@ -18,16 +18,22 @@ namespace BusinessLayer.Models.User
 
         public UserSearch(string login, string role)
         {
-            Login = login;
-
-            switch (role.ToLower())
+            if (!string.IsNullOrEmpty(login))
             {
-                case "admin":
-                    RoleId = (int)RoleName.Admin;
-                    break;
-                case "user":
-                    RoleId = (int)RoleName.User;
-                    break;
+                Login = login;
+            }
+
+            if (!string.IsNullOrEmpty(role))
+            {
+                switch (role.ToLower())
+                {
+                    case "admin":
+                        RoleId = (int)RoleName.Admin;
+                        break;
+                    case "user":
+                        RoleId = (int)RoleName.User;
+                        break;
+                }
             }
         }
     }
