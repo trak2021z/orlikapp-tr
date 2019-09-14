@@ -7,6 +7,8 @@ namespace BusinessLayer.Models.Auth
     public enum AuthError
     {
         InvalidLogin = 0,
-        InvalidPassword = 1
+        InvalidPassword = 1,
+        EmptyToken = 2,
+        EmptyPassword = 3
     }
 }

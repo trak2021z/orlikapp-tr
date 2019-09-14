@@ -21,11 +21,13 @@ namespace Web.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly IUserRepository _userRepository;
         private readonly IMapper _mapper;
 
-        public AuthController(IAuthService authService, IMapper mapper)
+        public AuthController(IAuthService authService, IUserRepository userRepository, IMapper mapper)
         {
             _authService = authService;
+            _userRepository = userRepository;
             _mapper = mapper;
         }
 
@@ -36,8 +38,19 @@ namespace Web.Controllers
         {
             try
             {
-                var token = await _authService.Authenticate(request.Login, request.Password);
-                return Ok(new { Token = token });
+                var authResponse = await _authService.Authenticate(request.Login, request.Password);
+
+                if (!string.IsNullOrEmpty(authResponse.Token))
+                {
+                    var userDetails = await _userRepository.GetWithRole(authResponse.UserId);
+                    return Ok(new LoginResponse(userDetails, authResponse.Token));
+                }
+
+                return Unauthorized(new BadRequestModel()
+                {
+                    Message = "Pusty token",
+                    ErrorCode = (int)AuthError.EmptyToken
+                });
             }
             catch (AuthException e)
             {
@@ -53,6 +66,7 @@ namespace Web.Controllers
         {
             try
             {
+                var x = request.Email;
                 var user = await _authService.RegisterUser(request.Login, request.Password, request.Email);
                 return Ok(new { user.Id, user.Login });
             }

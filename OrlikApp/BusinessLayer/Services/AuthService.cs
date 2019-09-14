@@ -37,21 +37,19 @@ namespace BusinessLayer.Services
         }
 
         #region Authenticate()
-        public async Task<string> Authenticate(string login, string password)
+        public async Task<AuthResponse> Authenticate(string login, string password)
         {
             var user = await _context.Users.AsNoTracking()
                 .FirstOrDefaultAsync(x => x.Login == login);
 
             if (user == null)
             {
-                throw new AuthException("Nieprawidłowa nazwa użytkownika",
-                    AuthError.InvalidLogin);
+                throw new AuthException("Nieprawidłowa nazwa użytkownika", AuthError.InvalidLogin);
             }
 
             if (!_hashService.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
             {
-                throw new AuthException("Nieprawidłowe hasło",
-                    AuthError.InvalidPassword);
+                throw new AuthException("Nieprawidłowe hasło", AuthError.InvalidPassword);
             }
 
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -68,7 +66,11 @@ namespace BusinessLayer.Services
             var token = tokenHandler.CreateToken(tokenDescriptor);
             var tokenString = tokenHandler.WriteToken(token);
 
-            return tokenString;
+            return new AuthResponse()
+            {
+                UserId = user.Id,
+                Token = tokenString
+            };
         }
         #endregion
 
