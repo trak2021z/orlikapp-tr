@@ -142,7 +142,7 @@ namespace BusinessLayer.Services
 
             if (loginExists)
             {
-                throw new UserException("Podana nazwa użytkownika jest już zajęta", UserError.EmailAlreadyExists);
+                throw new UserException("Podana nazwa użytkownika jest już zajęta", UserError.LoginAlreadyExists);
             }
         }
         #endregion

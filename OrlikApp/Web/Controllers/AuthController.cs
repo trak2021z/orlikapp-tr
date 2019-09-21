@@ -76,5 +76,11 @@ namespace Web.Controllers
             }
         }
         #endregion
+
+        [HttpGet("test")]
+        public async Task<ActionResult> Test()
+        {
+            return Ok();
+        }
     }
 }
