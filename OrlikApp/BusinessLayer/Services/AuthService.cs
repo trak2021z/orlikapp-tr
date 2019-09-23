@@ -5,6 +5,7 @@ using BusinessLayer.Models.Auth;
 using BusinessLayer.Models.Enums;
 using BusinessLayer.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -23,80 +24,99 @@ namespace BusinessLayer.Services
         private readonly TokenSettings _tokenSettings;
         private readonly IUserRepository _userRepository;
         private readonly IHashService _hashService;
+        private readonly ILogger<AuthService> _logger;
 
         public AuthService(
             OrlikAppContext context, 
             IOptions<TokenSettings> tokenSettings,
             IUserRepository userRepository,
-            IHashService hashService)
+            IHashService hashService,
+            ILogger<AuthService> logger)
         {
             _context = context;
             _tokenSettings = tokenSettings.Value;
             _userRepository = userRepository;
             _hashService = hashService;
+            _logger = logger;
         }
 
         #region Authenticate()
         public async Task<AuthResponse> Authenticate(string login, string password)
         {
-            var user = await _context.Users.AsNoTracking()
-                .FirstOrDefaultAsync(x => x.Login == login);
-
-            if (user == null)
+            try
             {
-                throw new AuthException("Nieprawidłowa nazwa użytkownika", AuthError.InvalidLogin);
-            }
+                throw new Exception("Test");
+                var user = await _context.Users.AsNoTracking()
+                    .FirstOrDefaultAsync(x => x.Login == login);
 
-            if (!_hashService.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
-            {
-                throw new AuthException("Nieprawidłowe hasło", AuthError.InvalidPassword);
-            }
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(_tokenSettings.SecretKey);
-            var tokenDescriptor = new SecurityTokenDescriptor
-            {
-                Subject = new ClaimsIdentity(new Claim[]
+                if (user == null)
                 {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
-                }),
-                Expires = DateTime.UtcNow.AddHours(6),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
-            };
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-            var tokenString = tokenHandler.WriteToken(token);
+                    throw new AuthException("Nieprawidłowa nazwa użytkownika", AuthError.InvalidLogin);
+                }
 
-            return new AuthResponse()
+                if (!_hashService.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
+                {
+                    throw new AuthException("Nieprawidłowe hasło", AuthError.InvalidPassword);
+                }
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var key = Encoding.ASCII.GetBytes(_tokenSettings.SecretKey);
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(new Claim[]
+                    {
+                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                    }),
+                    Expires = DateTime.UtcNow.AddHours(6),
+                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                };
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+                var tokenString = tokenHandler.WriteToken(token);
+
+                return new AuthResponse()
+                {
+                    UserId = user.Id,
+                    Token = tokenString
+                };
+            }
+            catch (Exception e)
             {
-                UserId = user.Id,
-                Token = tokenString
-            };
+                _logger.LogError(e.ToString());
+                throw;
+            }
         }
         #endregion
 
         #region RegisterUser()
         public async Task<User> RegisterUser(string login, string password, string email)
         {
-            await _userRepository.CheckUniqueFields(login, email);
-
-            var user = new User
+            try
             {
-                Login = login,
-                Email = email,
-                DateCreated = DateTime.Now,
-                DateModified = DateTime.Now,
-                RoleId = (long)RoleName.User
-            };
+                await _userRepository.CheckUniqueFields(login, email);
+                var user = new User
+                {
+                    Login = login,
+                    Email = email,
+                    DateCreated = DateTime.Now,
+                    DateModified = DateTime.Now,
+                    RoleId = (long)RoleName.User
+                };
 
-            _hashService.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+                _hashService.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
 
-            _context.Users.Add(user);
-            _context.SaveChanges();
+                _context.Users.Add(user);
+                _context.SaveChanges();
 
-            return user;
+                return user;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
         }
         #endregion
     }

@@ -9,6 +9,7 @@ using BusinessLayer.Services.Interfaces;
 using BusinessLayer.Helpers.Pagination;
 using BusinessLayer.Models.User;
 using Web.Helpers.Pagination;
+using Microsoft.Extensions.Logging;
 
 namespace BusinessLayer.Services
 {
@@ -16,25 +17,43 @@ namespace BusinessLayer.Services
     {
         private readonly OrlikAppContext _context;
         private readonly IHashService _hashService;
+        private readonly ILogger<UserRepository> _logger;
 
-        public UserRepository(OrlikAppContext context, IHashService hashService)
+        public UserRepository(OrlikAppContext context, IHashService hashService, ILogger<UserRepository> logger)
         {
             _context = context;
             _hashService = hashService;
+            _logger = logger;
         }
 
         #region Get()
         public async Task<User> Get(long id)
         {
-            return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+            try
+            {
+                return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
         }
         #endregion
 
         #region GetWithRole()
         public async Task<User> GetWithRole(long id)
         {
-            return await _context.Users.AsNoTracking().Include(u => u.Role)
-                .FirstOrDefaultAsync(u => u.Id == id);
+            try
+            {
+                return await _context.Users.AsNoTracking().Include(u => u.Role)
+                    .FirstOrDefaultAsync(u => u.Id == id);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
         }
         #endregion
 
@@ -69,8 +88,9 @@ namespace BusinessLayer.Services
 
                 return pagedList;
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                _logger.LogError(e.ToString());
                 throw;
             }
         }
@@ -79,50 +99,74 @@ namespace BusinessLayer.Services
         #region Create()
         public async Task<User> Create(User user, string password)
         {
-            await CheckUniqueFields(user.Login, user.Email);
+            try
+            {
+                await CheckUniqueFields(user.Login, user.Email);
 
-            user.DateCreated = DateTime.Now;
-            user.DateModified = DateTime.Now;
+                user.DateCreated = DateTime.Now;
+                user.DateModified = DateTime.Now;
 
-            _hashService.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+                _hashService.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
-            user.PasswordHash = passwordHash;
-            user.PasswordSalt = passwordSalt;
+                user.PasswordHash = passwordHash;
+                user.PasswordSalt = passwordSalt;
 
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
 
-            return user;
+                return user;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
         }
         #endregion
 
         #region Update()
         public async Task<User> Update(long id, User user)
         {
-            await CheckUniqueFields(user.Login, user.Email, id);
+            try
+            {
+                await CheckUniqueFields(user.Login, user.Email, id);
 
-            var existingUser = await Get(id);
+                var existingUser = await Get(id);
 
-            user.Id = existingUser.Id;
-            user.PasswordHash = existingUser.PasswordHash;
-            user.PasswordSalt = existingUser.PasswordSalt;
-            user.DateCreated = existingUser.DateCreated;
-            user.DateModified = DateTime.Now;
+                user.Id = existingUser.Id;
+                user.PasswordHash = existingUser.PasswordHash;
+                user.PasswordSalt = existingUser.PasswordSalt;
+                user.DateCreated = existingUser.DateCreated;
+                user.DateModified = DateTime.Now;
 
-            _context.Users.Update(user);
-            await _context.SaveChangesAsync();
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
 
-            return user;
+                return user;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
         }
         #endregion
 
         #region Remove()
         public async Task<User> Remove(User user)
         {
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Users.Remove(user);
+                await _context.SaveChangesAsync();
 
-            return user;
+                return user;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
         }
         #endregion
 
