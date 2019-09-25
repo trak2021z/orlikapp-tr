@@ -45,7 +45,6 @@ namespace BusinessLayer.Services
         {
             try
             {
-                throw new Exception("Test");
                 var user = await _context.Users.AsNoTracking()
                     .FirstOrDefaultAsync(x => x.Login == login);
 
