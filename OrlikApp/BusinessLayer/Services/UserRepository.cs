@@ -103,8 +103,8 @@ namespace BusinessLayer.Services
             {
                 await CheckUniqueFields(user.Login, user.Email);
 
-                user.DateCreated = DateTime.Now;
-                user.DateModified = DateTime.Now;
+                user.DateCreated = DateTime.UtcNow;
+                user.DateModified = DateTime.UtcNow;
 
                 _hashService.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
@@ -137,7 +137,7 @@ namespace BusinessLayer.Services
                 user.PasswordHash = existingUser.PasswordHash;
                 user.PasswordSalt = existingUser.PasswordSalt;
                 user.DateCreated = existingUser.DateCreated;
-                user.DateModified = DateTime.Now;
+                user.DateModified = DateTime.UtcNow;
 
                 _context.Users.Update(user);
                 await _context.SaveChangesAsync();

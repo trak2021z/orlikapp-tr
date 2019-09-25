@@ -96,8 +96,8 @@ namespace BusinessLayer.Services
                 {
                     Login = login,
                     Email = email,
-                    DateCreated = DateTime.Now,
-                    DateModified = DateTime.Now,
+                    DateCreated = DateTime.UtcNow,
+                    DateModified = DateTime.UtcNow,
                     RoleId = (long)RoleName.User
                 };
 
