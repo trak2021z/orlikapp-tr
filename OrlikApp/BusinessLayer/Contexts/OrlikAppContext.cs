@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using BusinessLayer.Entities;
 using BusinessLayer.Models.Enums;
+using System.Linq;
 
 namespace BusinessLayer.Contexts
 {
@@ -18,9 +19,18 @@ namespace BusinessLayer.Contexts
         public DbSet<Role> Roles { get; set; }
         public DbSet<Field> Fields { get; set; }
         public DbSet<WorkingTime> WorkingTimes { get; set; }
+        public DbSet<Match> Matches { get; set; }
+        public DbSet<MatchMember> MatchMembers { get; set; }
+
+
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            foreach (var relationship in modelBuilder.Model.GetEntityTypes().SelectMany(e => e.GetForeignKeys()))
+            {
+                relationship.DeleteBehavior = DeleteBehavior.Restrict;
+            }
+
             modelBuilder.Entity<User>()
                 .HasIndex(p =>  p.Email)
                 .IsUnique(true);
@@ -32,6 +42,8 @@ namespace BusinessLayer.Contexts
                     new Role { Id = (long)RoleName.Admin, Name = "Admin" },
                     new Role { Id = (long)RoleName.User, Name = "User" }
                 );
+            modelBuilder.Entity<MatchMember>()
+                .HasKey(mm => new { mm.MatchId, mm.PlayerId });
         }
     }
 }

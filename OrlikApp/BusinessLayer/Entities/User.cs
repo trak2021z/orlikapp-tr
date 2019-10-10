@@ -60,11 +60,13 @@ namespace BusinessLayer.Entities
 
         //TODO: Avatar
 
-        [Required]
         public long RoleId { get; set; }
 
-        [Required]
         public Role Role { get; set; }
+
+        public List<Match> FoundedMatches { get; set; }
+
+        public List<MatchMember> MatchMembers { get; set; }
 
         [NotMapped]
         public string Name

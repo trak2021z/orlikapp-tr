@@ -4,14 +4,16 @@ using BusinessLayer.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusinessLayer.Migrations
 {
     [DbContext(typeof(OrlikAppContext))]
-    partial class OrlikAppContextModelSnapshot : ModelSnapshot
+    [Migration("20191010155205_Modify_WorkingTime_Field_Relation")]
+    partial class Modify_WorkingTime_Field_Relation
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -67,8 +69,6 @@ namespace BusinessLayer.Migrations
 
                     b.Property<long>("FieldId");
 
-                    b.Property<long>("FounderId");
-
                     b.Property<bool>("IsAccepted");
 
                     b.Property<int?>("Minutes");
@@ -84,8 +84,6 @@ namespace BusinessLayer.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("FieldId");
-
-                    b.HasIndex("FounderId");
 
                     b.ToTable("Matches");
                 });
@@ -234,11 +232,6 @@ namespace BusinessLayer.Migrations
                     b.HasOne("BusinessLayer.Entities.Field", "Field")
                         .WithMany("Matches")
                         .HasForeignKey("FieldId")
-                        .OnDelete(DeleteBehavior.Restrict);
-
-                    b.HasOne("BusinessLayer.Entities.User", "Founder")
-                        .WithMany("FoundedMatches")
-                        .HasForeignKey("FounderId")
                         .OnDelete(DeleteBehavior.Restrict);
                 });
 

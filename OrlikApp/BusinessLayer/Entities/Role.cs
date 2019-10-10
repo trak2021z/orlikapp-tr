@@ -15,6 +15,6 @@ namespace BusinessLayer.Entities
         [Column(TypeName = "nvarchar(120)")]
         public string Name { get; set; }
 
-        public IEnumerable<User> Users { get; set; }
+        public List<User> Users { get; set; }
     }
 }

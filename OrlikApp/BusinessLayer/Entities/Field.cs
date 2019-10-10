@@ -34,7 +34,9 @@ namespace BusinessLayer.Entities
         [Required]
         public User Keeper { get; set; }
 
-        public IEnumerable<WorkingTime> WorkingTime { get; set; }
+        public List<WorkingTime> WorkingTime { get; set; }
+
+        public List<Match> Matches { get; set; }
 
         // TODO: Avatar
 

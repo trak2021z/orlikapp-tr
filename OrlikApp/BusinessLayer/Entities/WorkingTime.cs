@@ -21,10 +21,8 @@ namespace BusinessLayer.Entities
         public TimeSpan? CloseHour { get; set; }
 
 
-        [Required]
-        public long FieldId { get; set; }
+        public long? FieldId { get; set; }
 
-        [Required]
         public Field Field { get; set; }
     }
 }
