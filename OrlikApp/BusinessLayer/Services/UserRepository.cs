@@ -31,7 +31,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+                return await _context.Set<User>().AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
             }
             catch (Exception e)
             {
@@ -46,7 +46,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                return await _context.Users.AsNoTracking().Include(u => u.Role)
+                return await _context.Set<User>().AsNoTracking().Include(u => u.Role)
                     .FirstOrDefaultAsync(u => u.Id == id);
             }
             catch (Exception e)
@@ -62,8 +62,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                var users = await _context.Users.Include(u => u.Role).ToListAsync();
-                var query = users.AsEnumerable();
+                var query = _context.Set<User>().AsNoTracking();
 
                 if (!string.IsNullOrEmpty(search.Login))
                 {
@@ -75,18 +74,18 @@ namespace BusinessLayer.Services
                     query = query.Where(u => u.Role.Id == search.RoleId);
                 }
 
-                var resultList = query
-                    .OrderBy(u => u.LastName)
-                    .ThenBy(u => u.FirstName)
-                    .ToList();
+                query = query.OrderBy(u => u.LastName).ThenBy(u => u.FirstName)
+                    .Skip(pager.Offset).Take(pager.Size);
 
-                var pagedList = new PagedResult<User>
+                var queryResult = await query.ToListAsync();
+
+                var result = new PagedResult<User>
                 {
-                    Items = resultList.Skip(pager.Offset).Take(pager.Size),
-                    RowNumber = resultList.Count
+                    Items = queryResult,
+                    RowNumber = queryResult.Count
                 };
 
-                return pagedList;
+                return result;
             }
             catch (Exception e)
             {
@@ -173,7 +172,7 @@ namespace BusinessLayer.Services
         #region CheckUniqueFields()
         public async Task CheckUniqueFields(string login, string email, long id = 0)
         {
-            var emailExists = await _context.Users.AsNoTracking()
+            var emailExists = await _context.Set<User>().AsNoTracking()
                     .AnyAsync(u => u.Email == email && u.Id != id);
 
             if (emailExists)

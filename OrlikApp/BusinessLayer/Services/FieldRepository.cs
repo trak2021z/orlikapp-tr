@@ -74,15 +74,15 @@ namespace BusinessLayer.Services
                 }
 
                 query = query.OrderBy(f => f.Id).Skip(pager.Offset).Take(pager.Size);
-                var result = await query.Include(f => f.Type).Include(f => f.Keeper).ToListAsync();
+                var queryResult = await query.Include(f => f.Type).Include(f => f.Keeper).ToListAsync();
 
-                var pagedList = new PagedResult<Field>
+                var result = new PagedResult<Field>
                 {
-                    Items = result,
-                    RowNumber = result.Count
+                    Items = queryResult,
+                    RowNumber = queryResult.Count
                 };
 
-                return pagedList;
+                return result;
             }
             catch (Exception e)
             {
