@@ -98,7 +98,7 @@ namespace BusinessLayer.Services
                     Email = email,
                     DateCreated = DateTime.UtcNow,
                     DateModified = DateTime.UtcNow,
-                    RoleId = (long)RoleName.User
+                    RoleId = (long)RoleIds.User
                 };
 
                 _hashService.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);

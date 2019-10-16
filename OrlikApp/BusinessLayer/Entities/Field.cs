@@ -11,28 +11,30 @@ namespace BusinessLayer.Entities
         [Key]
         public long Id { get; set; }
 
-        [Column(TypeName = "nvarchar(60)")]
-        public string Name { get; set; }
-
         public int? Length { get; set; }
 
         public int? Width { get; set; }
 
-        public FieldType Type { get; set; }
-
         [Column(TypeName = "nvarchar(500)")]
         public string Description { get; set; }
 
+        [Required]
         [Column(TypeName = "nvarchar(120)")]
         public string Street { get; set; }
 
         public int? StreetNumber { get; set; }
 
+        [Required]
         [Column(TypeName = "nvarchar(120)")]
         public string City { get; set; }
 
-        [Required]
+        public long? KeeperId { get; set; }
+
         public User Keeper { get; set; }
+
+        public long TypeId { get; set; }
+
+        public FieldType Type { get; set; }
 
         public List<WorkingTime> WorkingTime { get; set; }
 

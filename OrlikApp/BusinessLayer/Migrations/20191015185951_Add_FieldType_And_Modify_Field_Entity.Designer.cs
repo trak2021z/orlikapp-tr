@@ -4,14 +4,16 @@ using BusinessLayer.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusinessLayer.Migrations
 {
     [DbContext(typeof(OrlikAppContext))]
-    partial class OrlikAppContextModelSnapshot : ModelSnapshot
+    [Migration("20191015185951_Add_FieldType_And_Modify_Field_Entity")]
+    partial class Add_FieldType_And_Modify_Field_Entity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,7 +28,6 @@ namespace BusinessLayer.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("nvarchar(120)");
 
                     b.Property<string>("Description")
@@ -37,7 +38,6 @@ namespace BusinessLayer.Migrations
                     b.Property<int?>("Length");
 
                     b.Property<string>("Street")
-                        .IsRequired()
                         .HasColumnType("nvarchar(120)");
 
                     b.Property<int?>("StreetNumber");
@@ -67,28 +67,6 @@ namespace BusinessLayer.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("FieldTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1L,
-                            Name = "Sztuczna murawa"
-                        },
-                        new
-                        {
-                            Id = 2L,
-                            Name = "Trawa"
-                        },
-                        new
-                        {
-                            Id = 3L,
-                            Name = "Tartan"
-                        },
-                        new
-                        {
-                            Id = 4L,
-                            Name = "Asfalt"
-                        });
                 });
 
             modelBuilder.Entity("BusinessLayer.Entities.Match", b =>

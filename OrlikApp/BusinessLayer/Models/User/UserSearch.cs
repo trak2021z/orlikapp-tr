@@ -16,7 +16,7 @@ namespace BusinessLayer.Models.User
                 
         }
 
-        public UserSearch(string login, string role)
+        public UserSearch(string login, string role = null)
         {
             if (!string.IsNullOrEmpty(login))
             {
@@ -28,10 +28,10 @@ namespace BusinessLayer.Models.User
                 switch (role.ToLower())
                 {
                     case "admin":
-                        RoleId = (int)RoleName.Admin;
+                        RoleId = (int)RoleIds.Admin;
                         break;
                     case "user":
-                        RoleId = (int)RoleName.User;
+                        RoleId = (int)RoleIds.User;
                         break;
                 }
             }

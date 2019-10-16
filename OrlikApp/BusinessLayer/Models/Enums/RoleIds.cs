@@ -4,7 +4,7 @@ using System.Text;
 
 namespace BusinessLayer.Models.Enums
 {
-    public enum RoleName
+    public enum RoleIds
     {
         Admin = 1,
         User = 2

@@ -4,14 +4,16 @@ using BusinessLayer.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusinessLayer.Migrations
 {
     [DbContext(typeof(OrlikAppContext))]
-    partial class OrlikAppContextModelSnapshot : ModelSnapshot
+    [Migration("20191016161115_Insert_FieldType_Data")]
+    partial class Insert_FieldType_Data
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -26,7 +28,6 @@ namespace BusinessLayer.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("City")
-                        .IsRequired()
                         .HasColumnType("nvarchar(120)");
 
                     b.Property<string>("Description")
@@ -37,7 +38,6 @@ namespace BusinessLayer.Migrations
                     b.Property<int?>("Length");
 
                     b.Property<string>("Street")
-                        .IsRequired()
                         .HasColumnType("nvarchar(120)");
 
                     b.Property<int?>("StreetNumber");

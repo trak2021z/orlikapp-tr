@@ -86,12 +86,11 @@ namespace Web
             });
             #endregion
 
-            // Bussiness servicess
+            // Bussiness services
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IHashService, HashService>();
-
-
+            services.AddScoped<IFieldRepository, FieldRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

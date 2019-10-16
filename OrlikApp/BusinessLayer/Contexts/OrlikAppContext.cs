@@ -18,6 +18,7 @@ namespace BusinessLayer.Contexts
         public DbSet<User> Users { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Field> Fields { get; set; }
+        public DbSet<FieldType> FieldTypes { get; set; }
         public DbSet<WorkingTime> WorkingTimes { get; set; }
         public DbSet<Match> Matches { get; set; }
         public DbSet<MatchMember> MatchMembers { get; set; }
@@ -37,13 +38,23 @@ namespace BusinessLayer.Contexts
             modelBuilder.Entity<User>()
                 .HasIndex(p => p.Login)
                 .IsUnique(true);
-            modelBuilder.Entity<Role>()
-                .HasData(
-                    new Role { Id = (long)RoleName.Admin, Name = "Admin" },
-                    new Role { Id = (long)RoleName.User, Name = "User" }
-                );
+            
             modelBuilder.Entity<MatchMember>()
                 .HasKey(mm => new { mm.MatchId, mm.PlayerId });
+
+            modelBuilder.Entity<Role>()
+                .HasData(
+                    new Role { Id = (long)RoleIds.Admin, Name = "Admin" },
+                    new Role { Id = (long)RoleIds.User, Name = "User" }
+                );
+
+            modelBuilder.Entity<FieldType>()
+                .HasData(
+                    new FieldType { Id = (long)FieldTypeIds.ArtificialTurf, Name = "Sztuczna murawa" },
+                    new FieldType { Id = (long)FieldTypeIds.Grass, Name = "Trawa" },
+                    new FieldType { Id = (long)FieldTypeIds.Tartan, Name = "Tartan" },
+                    new FieldType { Id = (long)FieldTypeIds.Asphalt, Name = "Asfalt" }
+                );
         }
     }
 }
