@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BusinessLayer.Entities;
 using BusinessLayer.Helpers.Pagination;
 using BusinessLayer.Models.Field;
 using BusinessLayer.Services.Interfaces;
@@ -62,6 +63,22 @@ namespace Web.Controllers
         }
         #endregion
 
+        #region Add()
+        [AllowAnonymous]
+        [HttpPost]
+        public async Task<ActionResult> Add([FromBody]FieldCreateRequest request)
+        {
+            try
+            {
+                var createdField = await _fieldRepository.Create(_mapper.Map<Field>(request));
+                return CreatedAtAction("GetDetails", new { createdField.Id }, new { createdField.Id });
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
+        #endregion
 
     }
 }

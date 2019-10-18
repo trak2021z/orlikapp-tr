@@ -15,17 +15,17 @@ namespace BusinessLayer.Entities
 
         public int? Width { get; set; }
 
-        [Column(TypeName = "nvarchar(500)")]
+        [Column(TypeName = "nvarchar(512)")]
         public string Description { get; set; }
 
         [Required]
-        [Column(TypeName = "nvarchar(120)")]
+        [Column(TypeName = "nvarchar(128)")]
         public string Street { get; set; }
 
         public int? StreetNumber { get; set; }
 
         [Required]
-        [Column(TypeName = "nvarchar(120)")]
+        [Column(TypeName = "nvarchar(128)")]
         public string City { get; set; }
 
         public long? KeeperId { get; set; }

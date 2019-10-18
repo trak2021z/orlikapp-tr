@@ -14,6 +14,8 @@ namespace Web.Models.Mapping
             CreateMap<BusinessLayer.Entities.Field, FieldItem>()
                 .ForMember(dest => dest.KeeperName, opt => opt.MapFrom(src => src.Keeper.Name))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.Name));
+
+            CreateMap<FieldCreateRequest, BusinessLayer.Entities.Field>();
         }
     }
 }

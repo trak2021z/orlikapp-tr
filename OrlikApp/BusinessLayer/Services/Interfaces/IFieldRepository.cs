@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using BusinessLayer.Entities;
 using BusinessLayer.Helpers.Pagination;
 using BusinessLayer.Models.Field;
@@ -11,5 +12,6 @@ namespace BusinessLayer.Services.Interfaces
         Task<Field> Get(long id);
         Task<PagedResult<Field>> GetPagedList(FieldSearch search, Pager pager);
         Task<Field> GetWithRelations(long id);
+        Task<Field> Create(Field field);
     }
 }

@@ -30,7 +30,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                return await _context.Set<Field>().AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+                return await _context.Fields.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
             }
             catch (Exception e)
             {
@@ -45,7 +45,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                return await _context.Set<Field>().AsNoTracking().Include(f => f.Keeper).Include(f => f.Type)
+                return await _context.Fields.AsNoTracking().Include(f => f.Keeper).Include(f => f.Type)
                     .FirstOrDefaultAsync(u => u.Id == id);
             }
             catch (Exception e)
@@ -61,7 +61,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                var query = _context.Set<Field>().AsNoTracking();
+                var query = _context.Fields.AsNoTracking();
 
                 if (!string.IsNullOrEmpty(search.Street))
                 {
@@ -92,5 +92,22 @@ namespace BusinessLayer.Services
         }
         #endregion
 
+        #region Create()
+        public async Task<Field> Create(Field field)
+        {
+            try
+            {
+                _context.Fields.Add(field);
+                await _context.SaveChangesAsync();
+
+                return field;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
+        }
+        #endregion
     }
 }

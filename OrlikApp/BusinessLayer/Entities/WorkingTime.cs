@@ -15,13 +15,12 @@ namespace BusinessLayer.Entities
         public DayOfWeek Day { get; set; }
 
         [Column(TypeName = "time(0)")]
-        public TimeSpan? OpenHour { get; set; }
+        public TimeSpan OpenHour { get; set; }
 
         [Column(TypeName = "time(0)")]
-        public TimeSpan? CloseHour { get; set; }
+        public TimeSpan CloseHour { get; set; }
 
-
-        public long? FieldId { get; set; }
+        public long FieldId { get; set; }
 
         public Field Field { get; set; }
     }
