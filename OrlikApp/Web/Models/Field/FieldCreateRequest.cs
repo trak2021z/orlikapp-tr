@@ -29,7 +29,7 @@ namespace Web.Models.Field
         public long? KeeperId { get; set; }
 
         [Required(ErrorMessage = "Typ boiska jest wymagany")]
-        public long TypeId { get; set; }
+        public long? TypeId { get; set; }
 
         public List<WorkingTimeRequest> WorkingTime { get; set; }
     }
