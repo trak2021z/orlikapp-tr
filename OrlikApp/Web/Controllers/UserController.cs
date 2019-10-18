@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BusinessLayer.Entities;
+using BusinessLayer.Helpers;
 using BusinessLayer.Helpers.Pagination;
 using BusinessLayer.Models.Enums;
 using BusinessLayer.Models.User;
@@ -77,7 +78,7 @@ namespace Web.Controllers
                     new { createdDbUser.Id },
                     new { createdDbUser.Id, createdDbUser.Login });
             }
-            catch (UserException e)
+            catch (BusinessLogicException e)
             {
                 return BadRequest(_mapper.Map<BadRequestModel>(e));
             }
@@ -102,7 +103,7 @@ namespace Web.Controllers
 
                 return Ok(result);
             }
-            catch (UserException e)
+            catch (BusinessLogicException e)
             {
                 return BadRequest(_mapper.Map<BadRequestModel>(e));
             }

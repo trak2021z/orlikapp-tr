@@ -50,12 +50,14 @@ namespace BusinessLayer.Services
 
                 if (user == null)
                 {
-                    throw new AuthException("Nieprawidłowa nazwa użytkownika", AuthError.InvalidLogin);
+                    throw new BusinessLogicException("Nieprawidłowa nazwa użytkownika",
+                        (int)AuthError.InvalidLogin);
                 }
 
                 if (!_hashService.VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
                 {
-                    throw new AuthException("Nieprawidłowe hasło", AuthError.InvalidPassword);
+                    throw new BusinessLogicException("Nieprawidłowe hasło",
+                        (int)AuthError.InvalidPassword);
                 }
 
                 var tokenHandler = new JwtSecurityTokenHandler();

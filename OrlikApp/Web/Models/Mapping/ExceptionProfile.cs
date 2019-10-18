@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
-using BusinessLayer.Models.Auth;
-using BusinessLayer.Models.User;
+using BusinessLayer.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +12,7 @@ namespace Web.Models.Mapping
     {
         public ExceptionProfile()
         {
-            CreateMap<UserException, BadRequestModel>()
-                .ForMember(dest => dest.ErrorCode, opt => opt.MapFrom(src => (int)src.ErrorCode));
-
-            CreateMap<AuthException, BadRequestModel>()
-                .ForMember(dest => dest.ErrorCode, opt => opt.MapFrom(src => (int)src.ErrorCode));
+            CreateMap<BusinessLogicException, BadRequestModel>();
         }
     }
 }

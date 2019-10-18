@@ -1,4 +1,5 @@
-﻿using BusinessLayer.Models.Auth;
+﻿using BusinessLayer.Helpers;
+using BusinessLayer.Models.Auth;
 using BusinessLayer.Services.Interfaces;
 using System;
 using System.Collections.Generic;
@@ -29,8 +30,8 @@ namespace BusinessLayer.Services
         {
             if (password == null || String.IsNullOrWhiteSpace(password))
             {
-                throw new AuthException("Hasło nie może być puste lub zawierać tylko białe znaki",
-                    AuthError.EmptyPassword);
+                throw new BusinessLogicException("Hasło nie może być puste lub zawierać tylko białe znaki",
+                    (int)AuthError.EmptyPassword);
             }
             if (storedHash.Length != 64)
             {

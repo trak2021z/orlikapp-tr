@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BusinessLayer.Entities;
+using BusinessLayer.Helpers;
 using BusinessLayer.Models.Auth;
 using BusinessLayer.Models.User;
 using BusinessLayer.Services.Interfaces;
@@ -52,7 +53,7 @@ namespace Web.Controllers
                     ErrorCode = (int)AuthError.EmptyToken
                 });
             }
-            catch (AuthException e)
+            catch (BusinessLogicException e)
             {
                 return BadRequest(_mapper.Map<BadRequestModel>(e));
             }
@@ -70,7 +71,7 @@ namespace Web.Controllers
                 var user = await _authService.RegisterUser(request.Login, request.Password, request.Email);
                 return Ok(new { user.Id, user.Login });
             }
-            catch (UserException e)
+            catch (BusinessLogicException e)
             {
                 return BadRequest(_mapper.Map<BadRequestModel>(e));
             }

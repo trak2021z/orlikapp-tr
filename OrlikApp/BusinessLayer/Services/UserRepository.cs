@@ -10,6 +10,7 @@ using BusinessLayer.Helpers.Pagination;
 using BusinessLayer.Models.User;
 using Web.Helpers.Pagination;
 using Microsoft.Extensions.Logging;
+using BusinessLayer.Helpers;
 
 namespace BusinessLayer.Services
 {
@@ -177,7 +178,8 @@ namespace BusinessLayer.Services
 
             if (emailExists)
             {
-                throw new UserException("Podany email jest już zajęty", UserError.EmailAlreadyExists);
+                throw new BusinessLogicException("Podany email jest już zajęty",
+                    (int)UserError.EmailAlreadyExists);
             }
 
             var loginExists = await _context.Users.AsNoTracking()
@@ -185,7 +187,8 @@ namespace BusinessLayer.Services
 
             if (loginExists)
             {
-                throw new UserException("Podana nazwa użytkownika jest już zajęta", UserError.LoginAlreadyExists);
+                throw new BusinessLogicException("Podana nazwa użytkownika jest już zajęta",
+                    (int)UserError.LoginAlreadyExists);
             }
         }
         #endregion
