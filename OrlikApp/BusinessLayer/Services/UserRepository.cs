@@ -11,6 +11,8 @@ using BusinessLayer.Models.User;
 using Web.Helpers.Pagination;
 using Microsoft.Extensions.Logging;
 using BusinessLayer.Helpers;
+using BusinessLayer.Models.Enums;
+using BusinessLayer.Models.Field;
 
 namespace BusinessLayer.Services
 {
@@ -101,7 +103,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                await CheckUniqueFields(user.Login, user.Email);
+                await CheckUserUniqueFields(user.Login, user.Email);
 
                 user.DateCreated = DateTime.UtcNow;
                 user.DateModified = DateTime.UtcNow;
@@ -129,7 +131,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                await CheckUniqueFields(user.Login, user.Email, id);
+                await CheckUserUniqueFields(user.Login, user.Email, id);
 
                 var existingUser = await Get(id);
 
@@ -171,7 +173,7 @@ namespace BusinessLayer.Services
         #endregion
 
         #region CheckUniqueFields()
-        public async Task CheckUniqueFields(string login, string email, long id = 0)
+        public async Task CheckUserUniqueFields(string login, string email, long id = 0)
         {
             var emailExists = await _context.Set<User>().AsNoTracking()
                     .AnyAsync(u => u.Email == email && u.Id != id);
@@ -192,5 +194,16 @@ namespace BusinessLayer.Services
             }
         }
         #endregion
+
+        public async Task CheckKeeperPermission(long keeperId)
+        {
+            var keeper = await GetWithRole(keeperId);
+
+            if (keeper.Role.Id == (long)RoleIds.User)
+            {
+                throw new BusinessLogicException("Podany opiekun nie ma odpowiedniej roli",
+                    (int)FieldError.InvalidKeeperRole);
+            }
+        }
     }
 }

@@ -7,6 +7,7 @@ namespace BusinessLayer.Models.Enums
     public enum RoleIds
     {
         Admin = 1,
-        User = 2
+        User = 2,
+        FieldManager = 3
     }
 }

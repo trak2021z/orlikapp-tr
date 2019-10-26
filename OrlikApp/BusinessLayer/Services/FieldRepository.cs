@@ -2,6 +2,7 @@
 using BusinessLayer.Entities;
 using BusinessLayer.Helpers;
 using BusinessLayer.Helpers.Pagination;
+using BusinessLayer.Models.Enums;
 using BusinessLayer.Models.Field;
 using BusinessLayer.Models.User;
 using BusinessLayer.Services.Interfaces;
@@ -20,11 +21,14 @@ namespace BusinessLayer.Services
     {
         private readonly OrlikAppContext _context;
         private readonly ILogger<UserRepository> _logger;
+        //private readonly IUserRepository _userRepository;
 
-        public FieldRepository(OrlikAppContext context, ILogger<UserRepository> logger)
+        public FieldRepository(OrlikAppContext context, ILogger<UserRepository> logger
+            /*IUserRepository userRepository*/)
         {
             _context = context;
             _logger = logger;
+            //_userRepository = userRepository;
         }
 
         #region Get()
@@ -42,12 +46,32 @@ namespace BusinessLayer.Services
         }
         #endregion
 
-        #region GetWithKeeper()
+        #region GetWithRelations()
         public async Task<Field> GetWithRelations(long id)
         {
             try
             {
-                return await _context.Fields.AsNoTracking().Include(f => f.Keeper).Include(f => f.Type)
+                return await _context.Fields.AsNoTracking()
+                    .Include(f => f.Keeper)
+                    .Include(f => f.Type)
+                    .Include(f => f.WorkingTime)
+                    .FirstOrDefaultAsync(u => u.Id == id);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
+        }
+        #endregion
+
+        #region GetWithWorkingTime()
+        public async Task<Field> GetWithWorkingTime(long id)
+        {
+            try
+            {
+                return await _context.Fields.AsNoTracking()
+                    .Include(f => f.WorkingTime)
                     .FirstOrDefaultAsync(u => u.Id == id);
             }
             catch (Exception e)
@@ -99,7 +123,36 @@ namespace BusinessLayer.Services
         {
             try
             {
+                if (field.KeeperId.HasValue)
+                {
+                    //await _userRepository.CheckKeeperPermission(field.KeeperId.Value);
+                }
+
                 _context.Fields.Add(field);
+                await _context.SaveChangesAsync();
+
+                return field;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
+        }
+        #endregion
+
+        #region Update()
+        public async Task<Field> Update(long id, Field field, IEnumerable<WorkingTime> workingTime)
+        {
+            try
+            {
+                if (field.KeeperId.HasValue)
+                {
+                    //await _userRepository.CheckKeeperPermission(field.KeeperId.Value);
+                }
+
+                field.Id = id;
+                _context.Fields.Update(field);
                 await _context.SaveChangesAsync();
 
                 return field;

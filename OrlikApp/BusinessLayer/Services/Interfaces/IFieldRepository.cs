@@ -13,5 +13,6 @@ namespace BusinessLayer.Services.Interfaces
         Task<PagedResult<Field>> GetPagedList(FieldSearch search, Pager pager);
         Task<Field> GetWithRelations(long id);
         Task<Field> Create(Field field);
+        Task<Field> Update(long id, Field field, IEnumerable<WorkingTime> workingTime);
     }
 }

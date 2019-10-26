@@ -51,7 +51,8 @@ namespace Web
 
             // Context
             services.AddDbContext<OrlikAppContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
+                options.UseSqlServer(Configuration.GetConnectionString("DevConnection")),
+                ServiceLifetime.Scoped);
 
             //AutoMapper
             services.AddAutoMapper();

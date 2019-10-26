@@ -17,6 +17,7 @@ namespace BusinessLayer.Services.Interfaces
         Task<User> Create(User user, string password);
         Task<User> Update(long id, User user);
         Task<User> Remove(User user);
-        Task CheckUniqueFields(string login, string email, long id = 0);
+        Task CheckUserUniqueFields(string login, string email, long id = 0);
+        Task CheckKeeperPermission(long keeperId);
     }
 }

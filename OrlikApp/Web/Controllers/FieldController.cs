@@ -1,16 +1,19 @@
 ﻿using AutoMapper;
 using BusinessLayer.Entities;
+using BusinessLayer.Helpers;
 using BusinessLayer.Helpers.Pagination;
 using BusinessLayer.Models.Field;
 using BusinessLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.Helpers.Pagination;
 using Web.Models.Field;
+using Web.Models.Helpers;
 
 namespace Web.Controllers
 {
@@ -50,6 +53,7 @@ namespace Web.Controllers
         #endregion
 
         #region GetDetails()
+        [AllowAnonymous]
         [HttpGet("{id:long}")]
         public async Task<ActionResult> GetDetails(long id)
         {
@@ -63,22 +67,55 @@ namespace Web.Controllers
         }
         #endregion
 
-        #region Add()
+        #region Create()
         [AllowAnonymous]
         [HttpPost]
-        public async Task<ActionResult> Add([FromBody]FieldCreateRequest request)
+        public async Task<ActionResult> Create([FromBody]FieldRequest request)
         {
             try
             {
                 var createdField = await _fieldRepository.Create(_mapper.Map<Field>(request));
                 return CreatedAtAction("GetDetails", new { createdField.Id }, new { createdField.Id });
             }
-            catch (Exception e)
+            catch (BusinessLogicException e)
             {
-                throw;
+                return BadRequest(_mapper.Map<BadRequestModel>(e));
             }
         }
         #endregion
+
+        #region Update()
+        [AllowAnonymous]
+        [HttpPut("{id:long}")]
+        public async Task<ActionResult> Update(long id, [FromBody]FieldRequest request)
+        {
+            try
+            {
+                var field = _fieldRepository.Get(id);
+                if (field == null)
+                {
+                    return NotFound();
+                }
+
+                var updatedField = await _fieldRepository.Update(id, _mapper.Map<Field>(request),
+                    _mapper.Map<IEnumerable<WorkingTime>>(request.WorkingTime));
+                return Ok(_mapper.Map<FieldUpdateResponse>(updatedField));
+            }
+            catch (BusinessLogicException e)
+            {
+                return BadRequest(_mapper.Map<BadRequestModel>(e));
+            }
+        }
+        #endregion
+
+        //#region Delete()
+        //[AllowAnonymous]
+        //[HttpDelete("{id:long}")]
+        //public async Task<ActionResult> Delete(long id)
+        //{
+
+        //}
+        //#endregion
 
     }
 }

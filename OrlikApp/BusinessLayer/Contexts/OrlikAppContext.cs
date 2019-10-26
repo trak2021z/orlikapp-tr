@@ -45,7 +45,8 @@ namespace BusinessLayer.Contexts
             modelBuilder.Entity<Role>()
                 .HasData(
                     new Role { Id = (long)RoleIds.Admin, Name = "Admin" },
-                    new Role { Id = (long)RoleIds.User, Name = "User" }
+                    new Role { Id = (long)RoleIds.User, Name = "Zawodnik" },
+                    new Role { Id = (long)RoleIds.FieldManager, Name = "Kierownik boiska" }
                 );
 
             modelBuilder.Entity<FieldType>()

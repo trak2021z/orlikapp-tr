@@ -93,7 +93,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                await _userRepository.CheckUniqueFields(login, email);
+                await _userRepository.CheckUserUniqueFields(login, email);
                 var user = new User
                 {
                     Login = login,

@@ -29,7 +29,9 @@ namespace Web.Models.Helpers
             var argumentPropertyValue = (TimeSpan)property.GetValue(validationContext.ObjectInstance);
 
             if (attributePropertyValue <= argumentPropertyValue)
+            {
                 return new ValidationResult(ErrorMessage);
+            }
 
             return ValidationResult.Success;
         }

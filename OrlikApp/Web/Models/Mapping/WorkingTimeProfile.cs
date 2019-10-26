@@ -12,6 +12,7 @@ namespace Web.Models.Mapping
         public WorkingTimeProfile()
         {
             CreateMap<WorkingTimeRequest, BusinessLayer.Entities.WorkingTime>();
+            CreateMap<BusinessLayer.Entities.WorkingTime, WorkingTimeResponse>();
         }
     }
 }

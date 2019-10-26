@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using Web.Models.Helpers;
 using Web.Models.WorkingTime;
 
 namespace Web.Models.Field
 {
-    public class FieldCreateRequest
+    public class FieldRequest
     {
         public int? Length { get; set; }
 
@@ -31,6 +32,7 @@ namespace Web.Models.Field
         [Required(ErrorMessage = "Typ boiska jest wymagany")]
         public long? TypeId { get; set; }
 
-        public List<WorkingTimeRequest> WorkingTime { get; set; }
+        [ValidateWorkingTimeDays(ErrorMessage = "Niepoprawna struktura listy czasy pracy")]
+        public List<WorkingTimeRequest> WorkingTime { get; set; } = new List<WorkingTimeRequest>();
     }
 }

@@ -30,7 +30,7 @@ namespace BusinessLayer.Models.User
                     case "admin":
                         RoleId = (int)RoleIds.Admin;
                         break;
-                    case "user":
+                    case "zawodnik":
                         RoleId = (int)RoleIds.User;
                         break;
                 }
