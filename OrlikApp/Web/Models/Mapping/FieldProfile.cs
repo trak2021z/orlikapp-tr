@@ -18,7 +18,8 @@ namespace Web.Models.Mapping
             CreateMap<FieldRequest, BusinessLayer.Entities.Field>()
                 .ForMember(dest => dest.WorkingTime, opt => opt.Ignore());
 
-            CreateMap<BusinessLayer.Entities.Field, FieldUpdateResponse>();
+            CreateMap<BusinessLayer.Entities.Field, FieldUpdateResponse>()
+                .ForMember(dest => dest.WorkingTime, opt => opt.Ignore());
         }
     }
 }

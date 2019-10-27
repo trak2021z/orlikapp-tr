@@ -91,7 +91,7 @@ namespace Web.Controllers
         {
             try
             {
-                var field = _fieldRepository.Get(id);
+                var field = await _fieldRepository.Get(id);
                 if (field == null)
                 {
                     return NotFound();

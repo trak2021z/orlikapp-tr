@@ -23,5 +23,22 @@ namespace BusinessLayer.Entities
         public long FieldId { get; set; }
 
         public Field Field { get; set; }
+
+        #region NOT MAPPED
+        public override bool Equals(object obj)
+        {
+            if (obj is WorkingTime comparedWorkingTime)
+            {
+                if (comparedWorkingTime.Day == Day
+                    && comparedWorkingTime.OpenHour == OpenHour
+                    && comparedWorkingTime.CloseHour == CloseHour)
+                {
+                    return true;
+                }
+            }
+
+            return base.Equals(obj);
+        }
+        #endregion
     }
 }

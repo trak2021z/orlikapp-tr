@@ -51,8 +51,7 @@ namespace Web
 
             // Context
             services.AddDbContext<OrlikAppContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DevConnection")),
-                ServiceLifetime.Scoped);
+                options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
 
             //AutoMapper
             services.AddAutoMapper();
@@ -92,6 +91,7 @@ namespace Web
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IHashService, HashService>();
             services.AddScoped<IFieldRepository, FieldRepository>();
+            services.AddScoped<IWorkingTimeRepository, WorkingTimeRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

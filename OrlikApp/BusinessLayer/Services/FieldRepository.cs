@@ -21,14 +21,16 @@ namespace BusinessLayer.Services
     {
         private readonly OrlikAppContext _context;
         private readonly ILogger<UserRepository> _logger;
-        //private readonly IUserRepository _userRepository;
+        private readonly IUserRepository _userRepository;
+        private readonly IWorkingTimeRepository _workingTimeRepository;
 
-        public FieldRepository(OrlikAppContext context, ILogger<UserRepository> logger
-            /*IUserRepository userRepository*/)
+        public FieldRepository(OrlikAppContext context, ILogger<UserRepository> logger,
+            IUserRepository userRepository, IWorkingTimeRepository workingTimeRepository)
         {
             _context = context;
             _logger = logger;
-            //_userRepository = userRepository;
+            _userRepository = userRepository;
+            _workingTimeRepository = workingTimeRepository;
         }
 
         #region Get()
@@ -125,7 +127,7 @@ namespace BusinessLayer.Services
             {
                 if (field.KeeperId.HasValue)
                 {
-                    //await _userRepository.CheckKeeperPermission(field.KeeperId.Value);
+                    await _userRepository.CheckKeeperPermission(field.KeeperId.Value);
                 }
 
                 _context.Fields.Add(field);
@@ -148,11 +150,31 @@ namespace BusinessLayer.Services
             {
                 if (field.KeeperId.HasValue)
                 {
-                    //await _userRepository.CheckKeeperPermission(field.KeeperId.Value);
+                    await _userRepository.CheckKeeperPermission(field.KeeperId.Value);
                 }
 
                 field.Id = id;
                 _context.Fields.Update(field);
+
+                var currentWorkingTime = await _workingTimeRepository.GetByFieldId(id);
+
+                foreach (var currentWorkingTimeItem in currentWorkingTime)
+                {
+                    if (!workingTime.Any(wt => wt.Equals(currentWorkingTimeItem)))
+                    {
+                        _context.WorkingTimes.Remove(currentWorkingTimeItem);
+                    }
+                }
+
+                foreach (var workingTimeItem in workingTime)
+                {
+                    if (!currentWorkingTime.Any(cwt => cwt.Equals(workingTimeItem)))
+                    {
+                        workingTimeItem.FieldId = id;
+                        _context.WorkingTimes.Add(workingTimeItem);
+                    }
+                }
+
                 await _context.SaveChangesAsync();
 
                 return field;
