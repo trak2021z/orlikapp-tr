@@ -14,5 +14,6 @@ namespace BusinessLayer.Services.Interfaces
         Task<Field> GetWithRelations(long id);
         Task<Field> Create(Field field);
         Task<Field> Update(long id, Field field, IEnumerable<WorkingTime> workingTime);
+        Task<Field> Delete(Field field);
     }
 }

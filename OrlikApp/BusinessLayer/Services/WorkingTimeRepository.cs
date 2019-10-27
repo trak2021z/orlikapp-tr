@@ -28,5 +28,27 @@ namespace BusinessLayer.Services
             return await _context.WorkingTimes.AsNoTracking().Where(wt => wt.FieldId == fieldId).ToListAsync();
         }
         #endregion
+
+        #region DeleteByFieldId()
+        public async Task<IEnumerable<WorkingTime>> DeleteByFieldId(long fieldId)
+        {
+            try
+            {
+                var workingTime = await GetByFieldId(fieldId);
+                foreach (var workingTimeItem in workingTime)
+                {
+                    _context.Remove(workingTimeItem);
+                }
+                await _context.SaveChangesAsync();
+
+                return workingTime;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
+        }
+        #endregion
     }
 }

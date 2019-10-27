@@ -121,7 +121,7 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            var result = await _userRepository.Remove(user);
+            await _userRepository.Remove(user);
             return Ok();
         }
         #endregion

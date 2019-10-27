@@ -186,5 +186,25 @@ namespace BusinessLayer.Services
             }
         }
         #endregion
+
+        #region Delete()
+        public async Task<Field> Delete(Field field)
+        {
+            try
+            {
+                await _workingTimeRepository.DeleteByFieldId(field.Id);
+
+                _context.Fields.Remove(field);
+                await _context.SaveChangesAsync();
+
+                return field;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
+        }
+        #endregion
     }
 }

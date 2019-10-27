@@ -108,14 +108,21 @@ namespace Web.Controllers
         }
         #endregion
 
-        //#region Delete()
-        //[AllowAnonymous]
-        //[HttpDelete("{id:long}")]
-        //public async Task<ActionResult> Delete(long id)
-        //{
+        #region Delete()
+        [AllowAnonymous]
+        [HttpDelete("{id:long}")]
+        public async Task<ActionResult> Delete(long id)
+        {
+            var field = await _fieldRepository.GetWithRelations(id);
+            if (field == null)
+            {
+                return NotFound();
+            }
 
-        //}
-        //#endregion
+            await _fieldRepository.Delete(field);
+            return Ok();
+        }
+        #endregion
 
     }
 }

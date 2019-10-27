@@ -7,5 +7,6 @@ namespace BusinessLayer.Services.Interfaces
     public interface IWorkingTimeRepository
     {
         Task<IEnumerable<WorkingTime>> GetByFieldId(long fieldId);
+        Task<IEnumerable<WorkingTime>> DeleteByFieldId(long fieldId);
     }
 }
