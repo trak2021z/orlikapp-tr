@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace BusinessLayer.Models.Enums
+namespace BusinessLayer.Models.Role
 {
     public enum RoleIds
     {
         Admin = 1,
         User = 2,
-        FieldManager = 3
+        FieldKeeper = 3
     }
 }

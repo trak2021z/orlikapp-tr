@@ -3,10 +3,10 @@ using BusinessLayer.Entities;
 using BusinessLayer.Helpers;
 using BusinessLayer.Helpers.Pagination;
 using BusinessLayer.Models.Field;
+using BusinessLayer.Models.Role;
 using BusinessLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -53,7 +53,6 @@ namespace Web.Controllers
         #endregion
 
         #region GetDetails()
-        [AllowAnonymous]
         [HttpGet("{id:long}")]
         public async Task<ActionResult> GetDetails(long id)
         {
@@ -68,8 +67,8 @@ namespace Web.Controllers
         #endregion
 
         #region Create()
-        [AllowAnonymous]
         [HttpPost]
+        [Authorize(Roles = RoleNames.Admin + ", " + RoleNames.FieldKeeper)]
         public async Task<ActionResult> Create([FromBody]FieldRequest request)
         {
             try
@@ -85,8 +84,8 @@ namespace Web.Controllers
         #endregion
 
         #region Update()
-        [AllowAnonymous]
         [HttpPut("{id:long}")]
+        [Authorize(Roles = RoleNames.Admin + ", " + RoleNames.FieldKeeper)]
         public async Task<ActionResult> Update(long id, [FromBody]FieldRequest request)
         {
             try
@@ -109,8 +108,8 @@ namespace Web.Controllers
         #endregion
 
         #region Delete()
-        [AllowAnonymous]
         [HttpDelete("{id:long}")]
+        [Authorize(Roles = RoleNames.Admin)]
         public async Task<ActionResult> Delete(long id)
         {
             var field = await _fieldRepository.GetWithRelations(id);

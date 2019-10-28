@@ -1,5 +1,7 @@
-﻿using BusinessLayer.Helpers.Pagination;
+﻿using BusinessLayer.Helpers;
+using BusinessLayer.Helpers.Pagination;
 using BusinessLayer.Models.Enums;
+using BusinessLayer.Models.Role;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -25,13 +27,16 @@ namespace BusinessLayer.Models.User
 
             if (!string.IsNullOrEmpty(role))
             {
-                switch (role.ToLower())
+                switch (role.FirstLetterToUpper())
                 {
-                    case "admin":
-                        RoleId = (int)RoleIds.Admin;
+                    case RoleNames.Admin:
+                        RoleId = (long)RoleIds.Admin;
                         break;
-                    case "zawodnik":
-                        RoleId = (int)RoleIds.User;
+                    case RoleNames.User:
+                        RoleId = (long)RoleIds.User;
+                        break;
+                    case RoleNames.FieldKeeper:
+                        RoleId = (long)RoleIds.FieldKeeper;
                         break;
                 }
             }

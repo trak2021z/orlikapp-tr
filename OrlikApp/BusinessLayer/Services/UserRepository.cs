@@ -11,8 +11,8 @@ using BusinessLayer.Models.User;
 using Web.Helpers.Pagination;
 using Microsoft.Extensions.Logging;
 using BusinessLayer.Helpers;
-using BusinessLayer.Models.Enums;
 using BusinessLayer.Models.Field;
+using BusinessLayer.Models.Role;
 
 namespace BusinessLayer.Services
 {

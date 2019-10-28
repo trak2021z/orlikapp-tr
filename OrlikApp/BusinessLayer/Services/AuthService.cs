@@ -2,7 +2,7 @@
 using BusinessLayer.Entities;
 using BusinessLayer.Helpers;
 using BusinessLayer.Models.Auth;
-using BusinessLayer.Models.Enums;
+using BusinessLayer.Models.Role;
 using BusinessLayer.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -45,7 +45,8 @@ namespace BusinessLayer.Services
         {
             try
             {
-                var user = await _context.Users.AsNoTracking()
+                // TODO: create method in user repository
+                var user = await _context.Users.AsNoTracking().Include(u => u.Role)
                     .FirstOrDefaultAsync(x => x.Login == login);
 
                 if (user == null)
@@ -66,7 +67,8 @@ namespace BusinessLayer.Services
                 {
                     Subject = new ClaimsIdentity(new Claim[]
                     {
-                    new Claim(ClaimTypes.Name, user.Id.ToString())
+                        new Claim(ClaimTypes.Name, user.Id.ToString()),
+                        new Claim(ClaimTypes.Role, user.Role.Name)
                     }),
                     Expires = DateTime.UtcNow.AddHours(6),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)

@@ -18,7 +18,7 @@ namespace Web.Models.Auth
             Id = user.Id;
             Name = user.Name;
             Email = user.Email;
-            RoleName = user.Role.Name.ToLower();
+            RoleName = user.Role.Name;
             Token = token;
         }
     }

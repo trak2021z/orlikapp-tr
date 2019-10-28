@@ -3,6 +3,7 @@ using BusinessLayer.Entities;
 using BusinessLayer.Helpers;
 using BusinessLayer.Helpers.Pagination;
 using BusinessLayer.Models.Enums;
+using BusinessLayer.Models.Role;
 using BusinessLayer.Models.User;
 using BusinessLayer.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -32,6 +33,8 @@ namespace Web.Controllers
 
         #region List()
         [HttpGet("list")]
+        //[Authorize(Roles = RoleNames.ADMIN)]
+        [AllowAnonymous]
         public async Task<ActionResult> GetPagedList([FromQuery]string username,
                                                      [FromQuery]string role, 
                                                      [FromQuery]int page, 
@@ -52,7 +55,7 @@ namespace Web.Controllers
         #endregion
 
         #region  GetDetails()
-        // GET: api/users/5
+        [Authorize(Roles = RoleNames.Admin)]
         [HttpGet("{id:long}")]
         public async Task<ActionResult> GetDetails(long id)
         {
@@ -67,7 +70,7 @@ namespace Web.Controllers
         #endregion
 
         #region Add()
-        // POST: api/users
+        [Authorize(Roles = RoleNames.Admin)]
         [HttpPost]
         public async Task<ActionResult> Add([FromBody]UserCreateRequest request)
         {
@@ -86,7 +89,7 @@ namespace Web.Controllers
         #endregion
 
         #region Edit()
-        // PUT: api/users
+        [Authorize(Roles = RoleNames.Admin)]
         [HttpPut("{id:long}")]
         public async Task<ActionResult> Edit(long id, [FromBody]UserBaseRequest request)
         {
@@ -111,7 +114,7 @@ namespace Web.Controllers
         #endregion
 
         #region Delete()
-        // DELETE: api/users/5
+        [Authorize(Roles = RoleNames.Admin)]
         [HttpDelete("{id}")]
         public async Task<ActionResult<User>> Delete(long id)
         {
