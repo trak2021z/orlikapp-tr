@@ -13,6 +13,7 @@ using Microsoft.Extensions.Logging;
 using BusinessLayer.Helpers;
 using BusinessLayer.Models.Field;
 using BusinessLayer.Models.Role;
+using System.Security.Claims;
 
 namespace BusinessLayer.Services
 {
@@ -195,6 +196,7 @@ namespace BusinessLayer.Services
         }
         #endregion
 
+        #region CheckKeeperPermission()
         public async Task CheckKeeperPermission(long keeperId)
         {
             var keeper = await GetWithRole(keeperId);
@@ -205,5 +207,20 @@ namespace BusinessLayer.Services
                     (int)FieldError.InvalidKeeperRole);
             }
         }
+        #endregion
+
+        #region CheckKeeperPermissionToField()
+        public bool IsKeeperHasPermissionToField(Field field, ClaimsPrincipal loggedUser)
+        {
+            if ((loggedUser.IsInRole(RoleNames.FieldKeeper)
+                && !(field.KeeperId.ToString() == loggedUser.Identity.Name))
+                || loggedUser.IsInRole(RoleNames.User))
+            {
+                return false;
+            }
+
+            return true;
+        }
+        #endregion
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using BusinessLayer.Entities;
 using BusinessLayer.Helpers.Pagination;
@@ -19,5 +20,6 @@ namespace BusinessLayer.Services.Interfaces
         Task<User> Remove(User user);
         Task CheckUserUniqueFields(string login, string email, long id = 0);
         Task CheckKeeperPermission(long keeperId);
+        bool IsKeeperHasPermissionToField(Field field, ClaimsPrincipal loggedUser);
     }
 }

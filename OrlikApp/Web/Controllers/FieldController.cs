@@ -24,11 +24,13 @@ namespace Web.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IFieldRepository _fieldRepository;
+        private readonly IUserRepository _userRepository;
 
-        public FieldController(IMapper mapper, IFieldRepository fieldRepository)
+        public FieldController(IMapper mapper, IFieldRepository fieldRepository, IUserRepository userRepository)
         {
             _mapper = mapper;
             _fieldRepository = fieldRepository;
+            _userRepository = userRepository;
         }
 
         #region List()
@@ -68,7 +70,7 @@ namespace Web.Controllers
 
         #region Create()
         [HttpPost]
-        [Authorize(Roles = RoleNames.Admin + ", " + RoleNames.FieldKeeper)]
+        [Authorize(Roles = RoleNames.Admin)]
         public async Task<ActionResult> Create([FromBody]FieldRequest request)
         {
             try
@@ -94,6 +96,11 @@ namespace Web.Controllers
                 if (field == null)
                 {
                     return NotFound();
+                }
+
+                if (!_userRepository.IsKeeperHasPermissionToField(field, User))
+                {
+                    return Forbid();
                 }
 
                 var updatedField = await _fieldRepository.Update(id, _mapper.Map<Field>(request),
