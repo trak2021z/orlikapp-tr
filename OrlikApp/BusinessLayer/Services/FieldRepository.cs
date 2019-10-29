@@ -93,7 +93,7 @@ namespace BusinessLayer.Services
 
                 if (!string.IsNullOrEmpty(search.Street))
                 {
-                    query = query.Where(f => f.Street.Equals(search.Street));
+                    query = query.Where(f => f.Street.Contains(search.Street));
 
                     if (search.StreetNumber.HasValue)
                     {
@@ -101,13 +101,15 @@ namespace BusinessLayer.Services
                     }
                 }
 
+                var queryResultNumber = query.Count();
+
                 query = query.OrderBy(f => f.Id).Skip(pager.Offset).Take(pager.Size);
                 var queryResult = await query.Include(f => f.Type).Include(f => f.Keeper).ToListAsync();
 
                 var result = new PagedResult<Field>
                 {
                     Items = queryResult,
-                    RowNumber = queryResult.Count
+                    RowNumber = queryResultNumber
                 };
 
                 return result;
@@ -157,23 +159,7 @@ namespace BusinessLayer.Services
                 _context.Fields.Update(field);
 
                 var currentWorkingTime = await _workingTimeRepository.GetByFieldId(id);
-
-                foreach (var currentWorkingTimeItem in currentWorkingTime)
-                {
-                    if (!workingTime.Any(wt => wt.Equals(currentWorkingTimeItem)))
-                    {
-                        _context.WorkingTimes.Remove(currentWorkingTimeItem);
-                    }
-                }
-
-                foreach (var workingTimeItem in workingTime)
-                {
-                    if (!currentWorkingTime.Any(cwt => cwt.Equals(workingTimeItem)))
-                    {
-                        workingTimeItem.FieldId = id;
-                        _context.WorkingTimes.Add(workingTimeItem);
-                    }
-                }
+                _workingTimeRepository.UpdateFieldWorkingTime(id, currentWorkingTime, workingTime);
 
                 await _context.SaveChangesAsync();
 

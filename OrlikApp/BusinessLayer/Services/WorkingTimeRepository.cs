@@ -29,6 +29,29 @@ namespace BusinessLayer.Services
         }
         #endregion
 
+        #region UpdateCollection()
+        public void UpdateFieldWorkingTime(long fieldId, IEnumerable<WorkingTime> currentWorkingTime,
+            IEnumerable<WorkingTime> newWorkingTime)
+        {
+            foreach (var currentWorkingTimeItem in currentWorkingTime)
+            {
+                if (!newWorkingTime.Any(wt => wt.Equals(currentWorkingTimeItem)))
+                {
+                    _context.WorkingTimes.Remove(currentWorkingTimeItem);
+                }
+            }
+
+            foreach (var workingTimeItem in newWorkingTime)
+            {
+                if (!currentWorkingTime.Any(cwt => cwt.Equals(workingTimeItem)))
+                {
+                    workingTimeItem.FieldId = fieldId;
+                    _context.WorkingTimes.Add(workingTimeItem);
+                }
+            }
+        }
+        #endregion
+
         #region DeleteByFieldId()
         public async Task<IEnumerable<WorkingTime>> DeleteByFieldId(long fieldId)
         {

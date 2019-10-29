@@ -78,15 +78,16 @@ namespace BusinessLayer.Services
                     query = query.Where(u => u.Role.Id == search.RoleId);
                 }
 
+                var queryResultNumber = query.Count();
+
                 query = query.OrderBy(u => u.LastName).ThenBy(u => u.FirstName)
                     .Skip(pager.Offset).Take(pager.Size);
-
                 var queryResult = await query.ToListAsync();
 
                 var result = new PagedResult<User>
                 {
                     Items = queryResult,
-                    RowNumber = queryResult.Count
+                    RowNumber = queryResultNumber
                 };
 
                 return result;

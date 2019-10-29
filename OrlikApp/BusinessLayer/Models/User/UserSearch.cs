@@ -38,6 +38,9 @@ namespace BusinessLayer.Models.User
                     case RoleNames.FieldKeeper:
                         RoleId = (long)RoleIds.FieldKeeper;
                         break;
+                    default:
+                        RoleId = -1;
+                        break;
                 }
             }
         }
