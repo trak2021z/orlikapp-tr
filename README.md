@@ -9,9 +9,9 @@ Zrealizowane założenia:
 - Połącznie z bazą danych MSSQL Server przy pomocy Entity Framework Core (Code First)
 - Konfiguracja Automappera, Swaggera
 - Stworzenie szablonu projektu według standardu tworzenia aplikacji biznesowej
-- Przykładowy CRUD
-- Autentykacja przy pomocy JWT
+- Autentykacja przy pomocy JWT, oparta na rolach użytkowników
+- Endpointy z operacjami CRUD
 
 Rzeczy zaplanowane do zrobienia w najbliższym czasie:
 - Obsługa obrazów
-- Połączenie API z widokiem w frameworku front-endowym
+- Obsługa powiadomień mailowych
