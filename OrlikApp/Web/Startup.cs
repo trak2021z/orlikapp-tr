@@ -57,8 +57,25 @@ namespace Web
             services.AddAutoMapper();
 
             // Swagger
-            services.AddSwaggerGen(c => 
-                c.SwaggerDoc("v1", new Info { Title = "OrlikApp API", Description = "Swagger OrlikApp API" }));
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1", new Info { Title = "OrlikApp API", Description = "Swagger OrlikApp API" });
+
+                var security = new Dictionary<string, IEnumerable<string>>
+                {
+                    { "Bearer", new string[0] }
+                };
+
+                c.AddSecurityDefinition("Bearer", new ApiKeyScheme
+                {
+                    Description = "JWT Authorization header",
+                    Name = "Authorization",
+                    In = "header",
+                    Type = "apiKey"
+                });
+
+                c.AddSecurityRequirement(security);
+            });
 
             #region JWT configuration
             var tokenSettingsSection = Configuration.GetSection("TokenSettings");
