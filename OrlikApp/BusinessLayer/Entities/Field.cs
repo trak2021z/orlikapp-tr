@@ -28,6 +28,8 @@ namespace BusinessLayer.Entities
         [Column(TypeName = "nvarchar(128)")]
         public string City { get; set; }
 
+        public bool AutoConfirm { get; set; }
+
         public long? KeeperId { get; set; }
 
         public User Keeper { get; set; }

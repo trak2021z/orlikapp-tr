@@ -27,6 +27,8 @@ namespace Web.Models.Field
         [StringLength(128, ErrorMessage = "Nazwa miasta jest zbyt długa")]
         public string City { get; set; }
 
+        public bool AutoConfirm { get; set; }
+
         public long? KeeperId { get; set; }
 
         [Required(ErrorMessage = "Typ boiska jest wymagany")]

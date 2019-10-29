@@ -14,6 +14,7 @@ namespace Web.Models.Field
         public string Street { get; set; }
         public int? StreetNumber { get; set; }
         public string City { get; set; }
+        public bool AutoConfirm { get; set; }
         public long? KeeperId { get; set; }
         public long TypeId { get; set; }
         public List<WorkingTimeResponse> WorkingTime { get; set; }
