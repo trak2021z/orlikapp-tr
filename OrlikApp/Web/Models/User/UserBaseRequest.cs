@@ -25,13 +25,9 @@ namespace Web.Models.User
 
         public DateTime? BirthDate { get; set; }
 
-        public int? Number { get; set; }
-
         public int? Height { get; set; }
 
         public int? Weight { get; set; }
-
-        public bool? IsRightFooted { get; set; }
 
         [StringLength(20, ErrorMessage = "Numer telefonu jest zbyt długi")]
         public string PhoneNumber { get; set; }

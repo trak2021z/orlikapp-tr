@@ -13,10 +13,8 @@ namespace Web.Models.User
         public string Name { get; set; }
         public string Email { get; set; }
         public string BirthDate { get; set; }
-        public int? Number { get; set; }
         public int? Height { get; set; }
         public int? Weight { get; set; }
-        public bool? IsRightFooted { get; set; }
         public string PhoneNumber { get; set; }
         public string RoleName { get; set; }
     }

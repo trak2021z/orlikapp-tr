@@ -38,13 +38,9 @@ namespace BusinessLayer.Entities
         [Column(TypeName = "date")]
         public DateTime? BirthDate { get; set; }
 
-        public int? Number { get; set; }
-
         public int? Height { get; set; }
 
         public int? Weight { get; set; }
-
-        public bool? IsRightFooted { get; set; }
 
         [Column(TypeName = "nvarchar(20)")]
         public string PhoneNumber { get; set; }
