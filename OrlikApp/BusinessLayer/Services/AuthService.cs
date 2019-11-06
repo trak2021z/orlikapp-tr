@@ -70,7 +70,7 @@ namespace BusinessLayer.Services
                         new Claim(ClaimTypes.Name, user.Id.ToString()),
                         new Claim(ClaimTypes.Role, user.Role.Name)
                     }),
-                    Expires = DateTime.UtcNow.AddHours(6),
+                    Expires = DateTime.Now.AddHours(6),
                     SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
@@ -100,8 +100,8 @@ namespace BusinessLayer.Services
                 {
                     Login = login,
                     Email = email,
-                    DateCreated = DateTime.UtcNow,
-                    DateModified = DateTime.UtcNow,
+                    DateCreated = DateTime.Now,
+                    DateModified = DateTime.Now,
                     RoleId = (long)RoleIds.User
                 };
 

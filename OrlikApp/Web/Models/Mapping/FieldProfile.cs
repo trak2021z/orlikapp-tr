@@ -15,7 +15,12 @@ namespace Web.Models.Mapping
                 .ForMember(dest => dest.KeeperName, opt => opt.MapFrom(src => src.Keeper.Name))
                 .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.Name));
 
-            CreateMap<FieldRequest, BusinessLayer.Entities.Field>()
+            CreateMap<BusinessLayer.Entities.Field, FieldBaseItem>()
+                .ForMember(dest => dest.Type, opt => opt.MapFrom(src => src.Type.Name));
+
+            CreateMap<FieldCreateRequest, BusinessLayer.Entities.Field>();
+
+            CreateMap<FieldUpdateRequest, BusinessLayer.Entities.Field>()
                 .ForMember(dest => dest.WorkingTime, opt => opt.Ignore());
 
             CreateMap<BusinessLayer.Entities.Field, FieldUpdateResponse>()

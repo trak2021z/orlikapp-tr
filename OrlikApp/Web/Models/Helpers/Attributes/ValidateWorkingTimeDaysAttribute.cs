@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Web.Models.WorkingTime;
 
-namespace Web.Models.Helpers
+namespace Web.Models.Helpers.Attributes
 {
     public class ValidateWorkingTimeDaysAttribute : ValidationAttribute
     {

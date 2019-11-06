@@ -20,6 +20,6 @@ namespace BusinessLayer.Services.Interfaces
         Task<User> Remove(User user);
         Task CheckUserUniqueFields(string login, string email, long id = 0);
         Task CheckKeeperPermission(long keeperId);
-        bool IsKeeperHasPermissionToField(Field field, ClaimsPrincipal loggedUser);
+        bool HasKeeperPermissionToField(Field field, ClaimsPrincipal loggedUser);
     }
 }

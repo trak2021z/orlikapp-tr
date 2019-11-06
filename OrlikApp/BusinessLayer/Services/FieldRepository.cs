@@ -34,7 +34,22 @@ namespace BusinessLayer.Services
         }
 
         #region Get()
-        public async Task<Field> Get(long id)
+        public Field Get(long id)
+        {
+            try
+            {
+                return _context.Fields.AsNoTracking().FirstOrDefault(u => u.Id == id);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
+        }
+        #endregion
+
+        #region GetAsync()
+        public async Task<Field> GetAsync(long id)
         {
             try
             {

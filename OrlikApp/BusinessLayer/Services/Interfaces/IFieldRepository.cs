@@ -9,7 +9,8 @@ namespace BusinessLayer.Services.Interfaces
 {
     public interface IFieldRepository
     {
-        Task<Field> Get(long id);
+        Field Get(long id);
+        Task<Field> GetAsync(long id);
         Task<PagedResult<Field>> GetPagedList(FieldSearch search, Pager pager);
         Task<Field> GetWithRelations(long id);
         Task<Field> Create(Field field);

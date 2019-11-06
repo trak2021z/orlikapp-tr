@@ -4,14 +4,16 @@ using BusinessLayer.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusinessLayer.Migrations
 {
     [DbContext(typeof(OrlikAppContext))]
-    partial class OrlikAppContextModelSnapshot : ModelSnapshot
+    [Migration("20191031224342_Change_IsAccepted_To_IsConfirmed")]
+    partial class Change_IsAccepted_To_IsConfirmed
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -102,8 +104,7 @@ namespace BusinessLayer.Migrations
                     b.Property<string>("Descrition")
                         .HasColumnType("nvarchar(256)");
 
-                    b.Property<DateTime>("EndOfJoiningDate")
-                        .HasColumnType("smalldatetime");
+                    b.Property<DateTime>("EndOfJoiningDate");
 
                     b.Property<long>("FieldId");
 
@@ -115,8 +116,7 @@ namespace BusinessLayer.Migrations
 
                     b.Property<int?>("PlayersAmmount");
 
-                    b.Property<DateTime>("StartDate")
-                        .HasColumnType("smalldatetime");
+                    b.Property<DateTime>("StartDate");
 
                     b.Property<int>("WantedPlayersAmmount");
 

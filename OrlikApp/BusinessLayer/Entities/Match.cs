@@ -15,12 +15,12 @@ namespace BusinessLayer.Entities
         public string Descrition { get; set; }
 
         [Required]
+        [Column(TypeName = "smalldatetime")]
         public DateTime StartDate { get; set; }
 
         [Required]
+        [Column(TypeName = "smalldatetime")]
         public DateTime EndOfJoiningDate { get; set; }
-
-        public string Result { get; set; }
 
         public int? Minutes { get; set; }
 
@@ -30,7 +30,7 @@ namespace BusinessLayer.Entities
         public int? PlayersAmmount { get; set; }
 
         [Required]
-        public bool IsAccepted { get; set; }
+        public bool IsConfirmed { get; set; }
 
         [Required]
         public long FieldId { get; set; }

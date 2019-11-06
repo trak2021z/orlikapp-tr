@@ -71,7 +71,7 @@ namespace Web.Controllers
         #region Create()
         [HttpPost]
         [Authorize(Roles = RoleNames.Admin)]
-        public async Task<ActionResult> Create([FromBody]FieldRequest request)
+        public async Task<ActionResult> Create([FromBody]FieldCreateRequest request)
         {
             try
             {
@@ -88,17 +88,17 @@ namespace Web.Controllers
         #region Update()
         [HttpPut("{id:long}")]
         [Authorize(Roles = RoleNames.Admin + ", " + RoleNames.FieldKeeper)]
-        public async Task<ActionResult> Update(long id, [FromBody]FieldRequest request)
+        public async Task<ActionResult> Update(long id, [FromBody]FieldUpdateRequest request)
         {
             try
             {
-                var field = await _fieldRepository.Get(id);
+                var field = await _fieldRepository.GetAsync(id);
                 if (field == null)
                 {
                     return NotFound();
                 }
 
-                if (!_userRepository.IsKeeperHasPermissionToField(field, User))
+                if (!_userRepository.HasKeeperPermissionToField(field, User))
                 {
                     return Forbid();
                 }

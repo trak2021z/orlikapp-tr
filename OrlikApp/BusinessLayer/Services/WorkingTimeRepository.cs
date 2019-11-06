@@ -73,5 +73,18 @@ namespace BusinessLayer.Services
             }
         }
         #endregion
+
+        #region IsDateInFieldWorkingTime()
+        public async Task<bool> IsDateInFieldWorkingTime(long fieldId, DateTime date)
+        {
+            var result = await _context.WorkingTimes.AsNoTracking()
+                .AnyAsync(wt => wt.FieldId == fieldId
+                             && wt.Day == date.DayOfWeek
+                             && wt.OpenHour <= date.TimeOfDay
+                             && wt.CloseHour >= date.TimeOfDay);
+
+            return result;
+        }
+        #endregion
     }
 }

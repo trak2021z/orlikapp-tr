@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using Web.Models.Helpers;
+using Web.Models.Helpers.Attributes;
 using Web.Models.WorkingTime;
 
 namespace Web.Models.Field
 {
-    public class FieldRequest
+    public class FieldCreateRequest
     {
         public int? Length { get; set; }
 

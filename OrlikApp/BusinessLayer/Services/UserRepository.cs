@@ -107,8 +107,8 @@ namespace BusinessLayer.Services
             {
                 await CheckUserUniqueFields(user.Login, user.Email);
 
-                user.DateCreated = DateTime.UtcNow;
-                user.DateModified = DateTime.UtcNow;
+                user.DateCreated = DateTime.Now;
+                user.DateModified = DateTime.Now;
 
                 _hashService.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
 
@@ -141,7 +141,7 @@ namespace BusinessLayer.Services
                 user.PasswordHash = existingUser.PasswordHash;
                 user.PasswordSalt = existingUser.PasswordSalt;
                 user.DateCreated = existingUser.DateCreated;
-                user.DateModified = DateTime.UtcNow;
+                user.DateModified = DateTime.Now;
 
                 _context.Users.Update(user);
                 await _context.SaveChangesAsync();
@@ -211,7 +211,7 @@ namespace BusinessLayer.Services
         #endregion
 
         #region CheckKeeperPermissionToField()
-        public bool IsKeeperHasPermissionToField(Field field, ClaimsPrincipal loggedUser)
+        public bool HasKeeperPermissionToField(Field field, ClaimsPrincipal loggedUser)
         {
             if ((loggedUser.IsInRole(RoleNames.FieldKeeper)
                 && !(field.KeeperId.ToString() == loggedUser.Identity.Name))

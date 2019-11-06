@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using BusinessLayer.Entities;
 
@@ -10,5 +11,6 @@ namespace BusinessLayer.Services.Interfaces
         void UpdateFieldWorkingTime(long fieldId, IEnumerable<WorkingTime> currentWorkingTime,
             IEnumerable<WorkingTime> newWorkingTime);
         Task<IEnumerable<WorkingTime>> DeleteByFieldId(long fieldId);
+        Task<bool> IsDateInFieldWorkingTime(long fieldId, DateTime date);
     }
 }
