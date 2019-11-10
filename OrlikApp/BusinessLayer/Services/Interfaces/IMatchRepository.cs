@@ -16,5 +16,6 @@ namespace BusinessLayer.Services.Interfaces
         Task<PagedResult<Match>> GetPagedList(MatchSearch filter, Pager pager, bool isConfirmed = true);
         Task<Match> Create(Match match, IPrincipal loggedUser);
         Task<Match> Delete(Match match);
+        Task<Match> Confirm(long matchId);
     }
 }

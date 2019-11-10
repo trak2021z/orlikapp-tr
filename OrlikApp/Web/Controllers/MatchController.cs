@@ -121,5 +121,33 @@ namespace Web.Controllers
         }
         #endregion
 
+        #region Confirm()
+        [HttpPost("confirm/{id:long}")]
+        [Authorize(Roles = RoleNames.Admin + ", " + RoleNames.FieldKeeper)]
+        public async Task<ActionResult> Confirm(long id)
+        {
+            try
+            {
+                var match = await _matchRepository.GetWithRelations(id);
+                if (match == null)
+                {
+                    return NotFound();
+                }
+
+                if (!_userRepository.HasKeeperPermissionToField(match.Field, User))
+                {
+                    return Forbid();
+                }
+
+                await _matchRepository.Confirm(id);
+
+                return Ok();
+            }
+            catch (BusinessLogicException e)
+            {
+                return BadRequest(_mapper.Map<BadRequestModel>(e));
+            }
+        }
+        #endregion
     }
 }

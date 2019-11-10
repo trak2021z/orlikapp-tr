@@ -11,6 +11,7 @@ namespace BusinessLayer.Models.Match
         JoiningDateExpired = 2,
         WantedPlayersLeftAmmountLessThanOne = 3,
         Unconfirmed = 4,
-        JoiningToOwnMatch = 5
+        JoiningToOwnMatch = 5,
+        AlreadyConfirmed = 6
     }
 }

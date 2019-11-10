@@ -184,5 +184,30 @@ namespace BusinessLayer.Services
             }
         }
         #endregion
+
+        #region Confirm()
+        public async Task<Match> Confirm(long matchId)
+        {
+            try
+            {
+                var match = await _context.Matches.FirstOrDefaultAsync(m => m.Id == matchId);
+                if (match.IsConfirmed)
+                {
+                    throw new BusinessLogicException("Mecz jest już zaakceptowany",
+                        (int)MatchError.AlreadyConfirmed);
+                }
+
+                match.IsConfirmed = true;
+                await _context.SaveChangesAsync();
+
+                return match;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
+        }
+        #endregion
     }
 }
