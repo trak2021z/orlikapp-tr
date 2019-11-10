@@ -44,5 +44,21 @@ namespace BusinessLayer.Entities
 
         public List<MatchMember> MatchMembers { get; set; }
 
+        #region NOT MAPPED
+        [NotMapped]
+        public int WantedPlayersLeftAmmonut
+        {
+            get
+            {
+                if (MatchMembers != null)
+                {
+                    return WantedPlayersAmmount - MatchMembers.Count;
+                }
+
+                return WantedPlayersAmmount;
+            }
+        }
+        #endregion
+
     }
 }

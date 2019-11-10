@@ -9,6 +9,7 @@ namespace BusinessLayer.Entities
     public class MatchMember
     {
         [Required]
+        [Column(TypeName = "smalldatetime")]
         public DateTime JoiningDate { get; set; }
 
         public long MatchId { get; set; }

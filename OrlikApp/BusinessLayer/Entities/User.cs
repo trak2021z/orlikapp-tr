@@ -64,6 +64,7 @@ namespace BusinessLayer.Entities
 
         public List<MatchMember> MatchMembers { get; set; }
 
+        #region NOT MAPPED
         [NotMapped]
         public string Name
         {
@@ -76,5 +77,6 @@ namespace BusinessLayer.Entities
                 return string.Empty;
             }
         }
+        #endregion
     }
 }

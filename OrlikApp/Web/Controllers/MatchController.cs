@@ -27,13 +27,15 @@ namespace Web.Controllers
         private readonly ILogger<MatchController> _logger;
         private readonly IMatchRepository _matchRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IMatchMemberRepository _matchMemberRepository;
 
         public MatchController(IMapper mapper, IMatchRepository matchRepository, ILogger<MatchController> logger,
-            IUserRepository userRepository)
+            IUserRepository userRepository, IMatchMemberRepository matchMemberRepository)
         {
             _mapper = mapper;
             _matchRepository = matchRepository;
             _userRepository = userRepository;
+            _matchMemberRepository = matchMemberRepository;
             _logger = logger;
         }
 
@@ -76,7 +78,6 @@ namespace Web.Controllers
 
         #region Delete()
         [HttpDelete("{id:long}")]
-        [Authorize(Roles = RoleNames.Admin + ", " + RoleNames.FieldKeeper)]
         public async Task<ActionResult> Delete(long id)
         {
             var match = await _matchRepository.GetWithRelations(id);
@@ -85,7 +86,8 @@ namespace Web.Controllers
                 return NotFound();
             }
 
-            if (!_userRepository.HasKeeperPermissionToField(match.Field, User))
+            if (!_userRepository.HasKeeperPermissionToField(match.Field, User)
+                && !_userRepository.IsUserMatchFounder(match, User))
             {
                 return Forbid();
             }
@@ -94,5 +96,30 @@ namespace Web.Controllers
             return Ok();
         }
         #endregion
+
+        #region Join()
+        [HttpPost("join/{id:long}")]
+        [Authorize(Roles = RoleNames.User)]
+        public async Task<ActionResult> Join(long id)
+        {
+            try
+            {
+                var match = await _matchRepository.GetWithRelations(id);
+                if (match == null)
+                {
+                    return NotFound();
+                }
+
+                var cratedMatchMember = await _matchMemberRepository.JoinToMatch(id, User);
+
+                return Ok();
+            }
+            catch (BusinessLogicException e)
+            {
+                return BadRequest(_mapper.Map<BadRequestModel>(e));
+            }
+        }
+        #endregion
+
     }
 }

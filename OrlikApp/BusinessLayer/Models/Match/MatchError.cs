@@ -6,6 +6,11 @@ namespace BusinessLayer.Models.Match
 {
     public enum MatchError
     {
-        InvalidStartDate = 0
+        InvalidStartDate = 0,
+        UserAlreadyJoinded = 1,
+        JoiningDateExpired = 2,
+        WantedPlayersLeftAmmountLessThanOne = 3,
+        Unconfirmed = 4,
+        JoiningToOwnMatch = 5
     }
 }

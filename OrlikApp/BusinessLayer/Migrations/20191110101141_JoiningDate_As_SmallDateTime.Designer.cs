@@ -4,14 +4,16 @@ using BusinessLayer.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusinessLayer.Migrations
 {
     [DbContext(typeof(OrlikAppContext))]
-    partial class OrlikAppContextModelSnapshot : ModelSnapshot
+    [Migration("20191110101141_JoiningDate_As_SmallDateTime")]
+    partial class JoiningDate_As_SmallDateTime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

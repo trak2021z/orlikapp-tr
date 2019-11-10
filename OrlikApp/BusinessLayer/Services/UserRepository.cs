@@ -210,7 +210,7 @@ namespace BusinessLayer.Services
         }
         #endregion
 
-        #region CheckKeeperPermissionToField()
+        #region HasKeeperPermissionToField()
         public bool HasKeeperPermissionToField(Field field, ClaimsPrincipal loggedUser)
         {
             if ((loggedUser.IsInRole(RoleNames.FieldKeeper)
@@ -221,6 +221,18 @@ namespace BusinessLayer.Services
             }
 
             return true;
+        }
+        #endregion
+
+        #region IsUserMatchFounder()
+        public bool IsUserMatchFounder(Match match, ClaimsPrincipal loggedUser)
+        {
+            if (loggedUser.IsInRole(RoleNames.User) && match.FounderId.ToString() == loggedUser.Identity.Name)
+            {
+                return true;
+            }
+
+            return false;
         }
         #endregion
     }

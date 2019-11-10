@@ -21,5 +21,6 @@ namespace BusinessLayer.Services.Interfaces
         Task CheckUserUniqueFields(string login, string email, long id = 0);
         Task CheckKeeperPermission(long keeperId);
         bool HasKeeperPermissionToField(Field field, ClaimsPrincipal loggedUser);
+        bool IsUserMatchFounder(Match match, ClaimsPrincipal loggedUser);
     }
 }

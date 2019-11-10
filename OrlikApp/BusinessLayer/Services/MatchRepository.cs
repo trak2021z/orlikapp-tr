@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Claims;
+using System.Security.Principal;
 using System.Text;
 using System.Threading.Tasks;
 using Web.Helpers.Pagination;
@@ -35,7 +35,40 @@ namespace BusinessLayer.Services
             _matchMemberRepository = matchMemberRepository;
         }
 
+        #region Get()
+        public async Task<Match> Get(long id)
+        {
+            try
+            {
+                return await _context.Matches.AsNoTracking()
+                    .FirstOrDefaultAsync(u => u.Id == id);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
+        }
+        #endregion
+
         #region GetWithMatchMembers()
+        public async Task<Match> GetWithMatchMembers(long id)
+        {
+            try
+            {
+                return await _context.Matches.AsNoTracking()
+                    .Include(m => m.MatchMembers)
+                    .FirstOrDefaultAsync(u => u.Id == id);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
+        }
+        #endregion
+
+        #region GetWithRelations()
         public async Task<Match> GetWithRelations(long id)
         {
             try
@@ -94,7 +127,7 @@ namespace BusinessLayer.Services
         #endregion
 
         #region Create()
-        public async Task<Match> Create(Match match, ClaimsPrincipal loggedUser)
+        public async Task<Match> Create(Match match, IPrincipal loggedUser)
         {
             try
             {
