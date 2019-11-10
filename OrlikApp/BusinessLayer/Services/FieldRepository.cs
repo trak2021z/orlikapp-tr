@@ -23,14 +23,17 @@ namespace BusinessLayer.Services
         private readonly ILogger<UserRepository> _logger;
         private readonly IUserRepository _userRepository;
         private readonly IWorkingTimeRepository _workingTimeRepository;
+        private readonly IMatchMemberRepository _matchMemberRepository;
 
         public FieldRepository(OrlikAppContext context, ILogger<UserRepository> logger,
-            IUserRepository userRepository, IWorkingTimeRepository workingTimeRepository)
+            IUserRepository userRepository, IWorkingTimeRepository workingTimeRepository,
+            IMatchMemberRepository matchMemberRepository)
         {
             _context = context;
             _logger = logger;
             _userRepository = userRepository;
             _workingTimeRepository = workingTimeRepository;
+            _matchMemberRepository = matchMemberRepository;
         }
 
         #region Get()
@@ -195,11 +198,35 @@ namespace BusinessLayer.Services
             try
             {
                 await _workingTimeRepository.DeleteByFieldId(field.Id);
+                await DeleteMatchesByFieldId(field.Id);
 
                 _context.Fields.Remove(field);
                 await _context.SaveChangesAsync();
 
                 return field;
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
+        }
+        #endregion
+
+        #region DeleteMatchesByFieldId()
+        public async Task<IEnumerable<Match>> DeleteMatchesByFieldId(long fieldId)
+        {
+            try
+            {
+                var matches = await _context.Matches.AsNoTracking().Where(m => m.FieldId == fieldId).ToListAsync();
+                foreach (var match in matches)
+                {
+                    await _matchMemberRepository.DeleteByMatchId(match.Id);
+                    _context.Remove(match);
+                }
+                await _context.SaveChangesAsync();
+
+                return matches;
             }
             catch (Exception e)
             {
