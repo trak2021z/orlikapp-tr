@@ -119,7 +119,8 @@ namespace BusinessLayer.Services
                 var queryResultNumber = query.Count();
 
                 query = query.OrderBy(f => f.Id).Skip(pager.Offset).Take(pager.Size);
-                var queryResult = await query.Include(f => f.Type).Include(f => f.Keeper).ToListAsync();
+                var queryResult = await query.Include(f => f.Type).Include(f => f.Keeper)
+                    .Include(f => f.WorkingTime).ToListAsync();
 
                 var result = new PagedResult<Field>
                 {

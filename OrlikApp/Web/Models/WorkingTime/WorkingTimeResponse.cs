@@ -8,6 +8,7 @@ namespace Web.Models.WorkingTime
     public class WorkingTimeResponse
     {
         public int Day { get; set; }
+        public string DayName { get; set; }
         public TimeSpan OpenHour { get; set; }
         public TimeSpan CloseHour { get; set; }
     }
