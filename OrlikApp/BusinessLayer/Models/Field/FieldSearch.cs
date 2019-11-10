@@ -8,8 +8,8 @@ namespace BusinessLayer.Models.Field
 {
     public class FieldSearch
     {
-        public string Street { get; set; }
-        public int? StreetNumber { get; set; }
+        public string Street { get; private set; }
+        public int? StreetNumber { get; private set; }
 
         public FieldSearch(string street, int? streetNumber)
         {

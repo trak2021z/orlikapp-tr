@@ -10,8 +10,8 @@ namespace BusinessLayer.Models.User
 {
     public class UserSearch
     {
-        public string Login { get; set; }
-        public long? RoleId { get; set; }
+        public string Login { get; private set; }
+        public long? RoleId { get; private set; }
 
         public UserSearch()
         {
