@@ -9,10 +9,10 @@ namespace BusinessLayer.Services.Interfaces
 {
     public interface IFieldRepository
     {
-        Field Get(long id);
-        Task<Field> GetAsync(long id);
+        Task<Field> Get(long id);
         Task<PagedResult<Field>> GetPagedList(FieldSearch search, Pager pager);
         Task<Field> GetWithRelations(long id);
+        Task<IEnumerable<FieldType>> GetTypes();
         Task<Field> Create(Field field);
         Task<Field> Update(long id, Field field, IEnumerable<WorkingTime> workingTime);
         Task<Field> Delete(Field field);

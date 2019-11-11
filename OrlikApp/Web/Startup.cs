@@ -109,8 +109,9 @@ namespace Web
             services.AddScoped<IHashService, HashService>();
             services.AddScoped<IFieldRepository, FieldRepository>();
             services.AddScoped<IWorkingTimeRepository, WorkingTimeRepository>();
-            services.AddTransient<IMatchRepository, MatchRepository>();
-            services.AddTransient<IMatchMemberRepository, MatchMemberRepository>();
+            services.AddScoped<IMatchRepository, MatchRepository>();
+            services.AddScoped<IMatchMemberRepository, MatchMemberRepository>();
+            services.AddScoped<IRoleRepository, RoleRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

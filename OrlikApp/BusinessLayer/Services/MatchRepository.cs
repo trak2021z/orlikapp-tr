@@ -131,7 +131,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                var field = await _fieldRepository.GetAsync(match.FieldId);
+                var field = await _fieldRepository.Get(match.FieldId);
                 var isStartDateValid = 
                     await _workingTimeRepository.IsDateInFieldWorkingTime(field.Id, match.StartDate);
 

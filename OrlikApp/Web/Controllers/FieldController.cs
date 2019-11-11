@@ -33,6 +33,16 @@ namespace Web.Controllers
             _userRepository = userRepository;
         }
 
+        #region GetAllTypes()
+        [HttpGet("types")]
+        public async Task<ActionResult> GetAllTypes()
+        {
+            var fieldTypes = await _fieldRepository.GetTypes();
+
+            return Ok(_mapper.Map<IEnumerable<DictionaryModel>>(fieldTypes));
+        }
+        #endregion
+
         #region List()
         [HttpGet("list")]
         public async Task<ActionResult> GetPagedList([FromQuery]string street,
@@ -92,7 +102,7 @@ namespace Web.Controllers
         {
             try
             {
-                var field = await _fieldRepository.GetAsync(id);
+                var field = await _fieldRepository.Get(id);
                 if (field == null)
                 {
                     return NotFound();
