@@ -43,6 +43,16 @@ namespace Web.Controllers
         }
         #endregion
 
+        #region GetAll()
+        [HttpGet]
+        public async Task<ActionResult> GetAll()
+        {
+            var fields = await _fieldRepository.GetAll();
+
+            return Ok(_mapper.Map<IEnumerable<DictionaryModel>>(fields));
+        }
+        #endregion
+
         #region List()
         [HttpGet("list")]
         public async Task<ActionResult> GetPagedList([FromQuery]string street,

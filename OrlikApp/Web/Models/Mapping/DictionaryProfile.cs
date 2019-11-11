@@ -12,7 +12,11 @@ namespace Web.Models.Mapping
         public DictionaryProfile()
         {
             CreateMap<BusinessLayer.Entities.Role, DictionaryModel>();
+
             CreateMap<BusinessLayer.Entities.FieldType, DictionaryModel>();
+
+            CreateMap<BusinessLayer.Entities.Field, DictionaryModel>()
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Address));
         }
     }
 }

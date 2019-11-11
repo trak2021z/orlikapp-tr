@@ -44,6 +44,15 @@ namespace BusinessLayer.Entities
 
         // TODO: Avatar
 
-
+        #region NOTMAPPED
+        [NotMapped]
+        public string Address
+        {
+            get
+            {
+                return $"{City}, {Street} {StreetNumber}";
+            }
+        }
+        #endregion
     }
 }

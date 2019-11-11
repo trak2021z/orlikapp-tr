@@ -87,6 +87,21 @@ namespace BusinessLayer.Services
         }
         #endregion
 
+        #region GetAll()
+        public async Task<IEnumerable<Field>> GetAll()
+        {
+            try
+            {
+                return await _context.Fields.AsNoTracking().ToListAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
+        }
+        #endregion
+
         #region GetPagedList()
         public async Task<PagedResult<Field>> GetPagedList(FieldSearch search, Pager pager)
         {
