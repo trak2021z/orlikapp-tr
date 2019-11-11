@@ -39,16 +39,17 @@ namespace Web.Controllers
             _logger = logger;
         }
 
-        #region List()
+        #region GetPagedList()
         [HttpGet("list")]
         public async Task<ActionResult> GetPagedList([FromQuery]long? fieldId,
+                                                     [FromQuery]bool onlyUnconfirmed,
                                                      [FromQuery]int page,
                                                      [FromQuery]int size)
         {
             var pager = new Pager(page, size);
-            var filter = new MatchSearch(fieldId);
+            var filter = new MatchSearch(fieldId, onlyUnconfirmed);
 
-            var pagedDBMatches = await _matchRepository.GetPagedList(filter, pager);
+            var pagedDBMatches = await _matchRepository.GetPagedList(filter, pager, User);
             var pagedResult = new PagedResult<MatchItem>
             {
                 Items = _mapper.Map<IEnumerable<MatchItem>>(pagedDBMatches.Items),

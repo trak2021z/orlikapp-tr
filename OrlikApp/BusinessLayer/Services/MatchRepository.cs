@@ -3,6 +3,7 @@ using BusinessLayer.Entities;
 using BusinessLayer.Helpers;
 using BusinessLayer.Helpers.Pagination;
 using BusinessLayer.Models.Match;
+using BusinessLayer.Models.Role;
 using BusinessLayer.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
@@ -88,16 +89,30 @@ namespace BusinessLayer.Services
         #endregion
 
         #region GetPagedList()
-        public async Task<PagedResult<Match>> GetPagedList(MatchSearch search, Pager pager, bool isConfirmed = true)
+        public async Task<PagedResult<Match>> GetPagedList(MatchSearch search, Pager pager, IPrincipal loggedUser)
         {
             try
             {
-                var query = _context.Matches.AsNoTracking()
-                    .Where(m => m.IsConfirmed == isConfirmed && m.StartDate > DateTime.Now);
+                var query = _context.Matches.AsNoTracking();
 
                 if (search.FieldId.HasValue)
                 {
                     query = query.Where(m => m.FieldId == search.FieldId);
+                }
+
+                if (loggedUser.IsInRole(RoleNames.User))
+                {
+                    query = query.Where(m => m.IsConfirmed == true && m.StartDate > DateTime.Now);
+                }
+                else if (loggedUser.IsInRole(RoleNames.FieldKeeper))
+                {
+                    query = query.Include(m => m.Field)
+                        .Where(m => m.Field.KeeperId == long.Parse(loggedUser.Identity.Name));
+                }
+
+                if (!loggedUser.IsInRole(RoleNames.User) && search.OnlyUnconfirmed)
+                {
+                    query = query.Where(m => m.IsConfirmed == false);
                 }
 
                 var queryResultNumber = query.Count();
