@@ -22,7 +22,7 @@ namespace BusinessLayer.Entities
         [Column(TypeName = "smalldatetime")]
         public DateTime EndOfJoiningDate { get; set; }
 
-        public int? Minutes { get; set; }
+        public int Minutes { get; set; }
 
         [Required]
         public int WantedPlayersAmmount { get; set; }
@@ -56,6 +56,15 @@ namespace BusinessLayer.Entities
                 }
 
                 return WantedPlayersAmmount;
+            }
+        }
+
+        [NotMapped]
+        public DateTime EndDate
+        {
+            get
+            {
+                return StartDate.AddMinutes((double)Minutes);
             }
         }
         #endregion

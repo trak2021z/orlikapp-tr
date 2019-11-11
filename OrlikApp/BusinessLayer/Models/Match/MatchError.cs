@@ -12,6 +12,7 @@ namespace BusinessLayer.Models.Match
         WantedPlayersLeftAmmountLessThanOne = 3,
         Unconfirmed = 4,
         JoiningToOwnMatch = 5,
-        AlreadyConfirmed = 6
+        AlreadyConfirmed = 6,
+        OccupiedField = 7
     }
 }

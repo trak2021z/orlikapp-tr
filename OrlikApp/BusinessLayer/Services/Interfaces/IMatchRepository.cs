@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Security.Principal;
 using System.Threading.Tasks;
 using BusinessLayer.Entities;
@@ -17,5 +18,6 @@ namespace BusinessLayer.Services.Interfaces
         Task<Match> Create(Match match, IPrincipal loggedUser);
         Task<Match> Delete(Match match);
         Task<Match> Confirm(long matchId);
+        Task CheckFieldOccupation(Match match);
     }
 }

@@ -20,6 +20,8 @@ namespace Web.Models.Match
         [FutureDate(ErrorMessage = "Wymagana data z przyszłości")]
         public DateTime? EndOfJoiningDate { get; set; }
 
+        [Required]
+        [Range(30, 120, ErrorMessage = "Mecz może trwać od 30 do 120 minut")]
         public int? Minutes { get; set; }
 
         [Required]

@@ -158,6 +158,7 @@ namespace BusinessLayer.Services
 
                 if (field.AutoConfirm)
                 {
+                    await CheckFieldOccupation(match);
                     match.IsConfirmed = true;
                 }
                 else
@@ -212,6 +213,8 @@ namespace BusinessLayer.Services
                         (int)MatchError.AlreadyConfirmed);
                 }
 
+                await CheckFieldOccupation(match);
+
                 match.IsConfirmed = true;
                 await _context.SaveChangesAsync();
 
@@ -221,6 +224,25 @@ namespace BusinessLayer.Services
             {
                 _logger.LogError(e.ToString());
                 throw;
+            }
+        }
+        #endregion
+
+        #region CheckFieldOccupation()
+        public async Task CheckFieldOccupation(Match match)
+        {
+            var conflictedMatch = await _context.Matches.AsNoTracking()
+                .FirstOrDefaultAsync(m => m.IsConfirmed && m.FieldId == match.FieldId &&
+                    ((m.StartDate <= match.StartDate && m.EndDate > match.StartDate) 
+                    || (m.StartDate < match.EndDate && m.EndDate >= match.EndDate)));
+
+            if (conflictedMatch != null)
+            {
+                string conflictedMatchTimeSpan = conflictedMatch.StartDate.ToString("dd/MM/yyyy H:mm") + " - " +
+                    conflictedMatch.EndDate.ToString("dd/MM/yyyy H:mm");
+
+                throw new BusinessLogicException("Wybrany czas koliduje z innym meczem: " +
+                    conflictedMatchTimeSpan, (int)MatchError.OccupiedField);
             }
         }
         #endregion
