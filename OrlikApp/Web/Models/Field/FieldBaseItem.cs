@@ -12,5 +12,6 @@ namespace Web.Models.Field
         public int? StreetNumber { get; set; }
         public string City { get; set; }
         public string Type { get; set; }
+        public string Address { get; set; }
     }
 }
