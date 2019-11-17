@@ -33,7 +33,6 @@ namespace Web.Controllers
 
         #region List()
         [HttpGet("list")]
-        [Authorize(Roles = RoleNames.Admin)]
         [AllowAnonymous]
         public async Task<ActionResult> GetPagedList([FromQuery]string username,
                                                      [FromQuery]string role, 

@@ -35,7 +35,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                return await _context.Set<User>().AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
+                return await _context.Users.AsNoTracking().FirstOrDefaultAsync(u => u.Id == id);
             }
             catch (Exception e)
             {
@@ -50,7 +50,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                return await _context.Set<User>().AsNoTracking().Include(u => u.Role)
+                return await _context.Users.AsNoTracking().Include(u => u.Role)
                     .FirstOrDefaultAsync(u => u.Id == id);
             }
             catch (Exception e)
@@ -66,7 +66,7 @@ namespace BusinessLayer.Services
         {
             try
             {
-                var query = _context.Set<User>().AsNoTracking();
+                var query = _context.Users.AsNoTracking();
 
                 if (!string.IsNullOrEmpty(search.Login))
                 {
@@ -80,9 +80,13 @@ namespace BusinessLayer.Services
 
                 var queryResultNumber = query.Count();
 
-                query = query.OrderBy(u => u.LastName).ThenBy(u => u.FirstName)
+                query = query.OrderBy(u => u.LastName)
+                    .ThenBy(u => u.FirstName)
                     .Skip(pager.Offset).Take(pager.Size);
-                var queryResult = await query.ToListAsync();
+
+                var queryResult = await query
+                    .Include(u => u.Role)
+                    .ToListAsync();
 
                 var result = new PagedResult<User>
                 {
