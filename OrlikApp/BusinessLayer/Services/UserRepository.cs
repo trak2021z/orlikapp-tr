@@ -61,6 +61,27 @@ namespace BusinessLayer.Services
         }
         #endregion
 
+        #region GetListByRole()
+        public async Task<IEnumerable<User>> GetListByRole(string roleName)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(roleName))
+                {
+                    return await _context.Users.AsNoTracking().Include(u => u.Role)
+                        .Where(u => u.Role.Name.FirstLetterToUpper() == roleName.FirstLetterToUpper()).ToListAsync();
+                }
+
+                return await _context.Users.AsNoTracking().Include(u => u.Role).ToListAsync();
+            }
+            catch (Exception e)
+            {
+                _logger.LogError(e.ToString());
+                throw;
+            }
+        }
+        #endregion
+
         #region GetPagedList()
         public async Task<PagedResult<User>> GetPagedList(UserSearch search, Pager pager)
         {

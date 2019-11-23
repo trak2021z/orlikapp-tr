@@ -14,6 +14,7 @@ namespace BusinessLayer.Services.Interfaces
     {
         Task<User> Get(long id);
         Task<User> GetWithRole(long id);
+        Task<IEnumerable<User>> GetListByRole(string roleName);
         Task<PagedResult<User>> GetPagedList(UserSearch search, Pager pager);
         Task<User> Create(User user, string password);
         Task<User> Update(long id, User user);

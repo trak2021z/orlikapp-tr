@@ -31,6 +31,16 @@ namespace Web.Controllers
             _mapper = mapper;
         }
 
+        #region GetAllByRole()
+        [HttpGet()]
+        public async Task<ActionResult> GetAllByRole([FromQuery]string role)
+        {
+            var users = await _userRepository.GetListByRole(role);
+
+            return Ok(_mapper.Map<IEnumerable<DictionaryModel>>(users));
+        }
+        #endregion
+
         #region List()
         [HttpGet("list")]
         [AllowAnonymous]
