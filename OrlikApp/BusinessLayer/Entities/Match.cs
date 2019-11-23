@@ -12,7 +12,7 @@ namespace BusinessLayer.Entities
         public long Id { get; set; }
 
         [Column(TypeName = "nvarchar(256)")]
-        public string Descrition { get; set; }
+        public string Description { get; set; }
 
         [Required]
         [Column(TypeName = "smalldatetime")]

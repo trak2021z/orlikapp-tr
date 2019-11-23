@@ -241,7 +241,7 @@ namespace BusinessLayer.Services
                 string conflictedMatchTimeSpan = conflictedMatch.StartDate.ToString("dd/MM/yyyy H:mm") + " - " +
                     conflictedMatch.EndDate.ToString("dd/MM/yyyy H:mm");
 
-                throw new BusinessLogicException("Wybrany czas koliduje z innym meczem: " +
+                throw new BusinessLogicException("Wybrany czas koliduje z innym meczem na tym boisku: " +
                     conflictedMatchTimeSpan, (int)MatchError.OccupiedField);
             }
         }

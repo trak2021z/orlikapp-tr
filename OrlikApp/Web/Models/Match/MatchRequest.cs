@@ -9,7 +9,8 @@ namespace Web.Models.Match
 {
     public class MatchRequest
     {
-        public string Descrition { get; set; }
+        [MaxLength(256, ErrorMessage = "Opis nie może zawierać więcej niż 256 znaków")]
+        public string Description { get; set; }
 
         [Required]
         [FutureDate(ErrorMessage = "Wymagana data z przyszłości")]

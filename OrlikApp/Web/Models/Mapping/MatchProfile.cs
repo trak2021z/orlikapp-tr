@@ -15,9 +15,9 @@ namespace Web.Models.Mapping
 
             CreateMap<BusinessLayer.Entities.Match, MatchItem>()
                 .ForMember(dest => dest.StartDate,
-                    opt => opt.MapFrom(src => src.StartDate.ToString("dd/MM/yyyy H:mm")))
+                    opt => opt.MapFrom(src => src.StartDate.ToString("yyyy/MM/dd H:mm")))
                 .ForMember(dest => dest.EndOfJoiningDate,
-                    opt => opt.MapFrom(src => src.EndOfJoiningDate.ToString("dd/MM/yyyy H:mm")));
+                    opt => opt.MapFrom(src => src.EndOfJoiningDate.ToString("yyyy/MM/dd H:mm")));
 
             CreateMap<BusinessLayer.Entities.Match, MatchCreateResponse>();
         }

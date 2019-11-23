@@ -99,7 +99,7 @@ namespace Web.Controllers
         #endregion
 
         #region Join()
-        [HttpPost("join/{id:long}")]
+        [HttpPut("join/{id:long}")]
         [Authorize(Roles = RoleNames.User)]
         public async Task<ActionResult> Join(long id)
         {
@@ -123,7 +123,7 @@ namespace Web.Controllers
         #endregion
 
         #region Confirm()
-        [HttpPost("confirm/{id:long}")]
+        [HttpPut("confirm/{id:long}")]
         [Authorize(Roles = RoleNames.Admin + ", " + RoleNames.FieldKeeper)]
         public async Task<ActionResult> Confirm(long id)
         {

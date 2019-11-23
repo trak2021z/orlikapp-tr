@@ -12,9 +12,11 @@ namespace Web.Models.Mapping
     {
         public MatchMemberProfile()
         {
-            CreateMap<BusinessLayer.Entities.MatchMember, UserDictionaryItem>()
+            CreateMap<BusinessLayer.Entities.MatchMember, UserSimpleItem>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.Player.Id))
-                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Player.Name));
+                .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.Player.Name))
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.Player.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.Player.LastName));
 
             CreateMap<BusinessLayer.Entities.MatchMember, MatchMemberJoinModel>();
         }

@@ -34,7 +34,7 @@ namespace Web.Models.Field
         [Required(ErrorMessage = "Typ boiska jest wymagany")]
         public long? TypeId { get; set; }
 
-        [ValidateWorkingTimeDays(ErrorMessage = "Niepoprawna struktura listy czasy pracy")]
+        [ValidateWorkingTimeDays(ErrorMessage = "Niepoprawna struktura listy czasu pracy")]
         public List<WorkingTimeRequest> WorkingTime { get; set; } = new List<WorkingTimeRequest>();
     }
 }
