@@ -10,5 +10,6 @@ namespace BusinessLayer.Models.Field
         public const string Grass = "Trawa";
         public const string Tartan = "Tartan";
         public const string Asphalt = "Asfalt";
+        public const string Hall = "Hala";
     }
 }

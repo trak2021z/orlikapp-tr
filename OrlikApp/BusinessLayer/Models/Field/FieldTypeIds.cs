@@ -9,6 +9,7 @@ namespace BusinessLayer.Models.Enums
         ArtificialTurf = 1,
         Grass = 2,
         Tartan = 3,
-        Asphalt = 4
+        Asphalt = 4,
+        Hall = 5
     }
 }

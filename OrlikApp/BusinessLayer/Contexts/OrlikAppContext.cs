@@ -56,7 +56,8 @@ namespace BusinessLayer.Contexts
                     new FieldType { Id = (long)FieldTypeIds.ArtificialTurf, Name = FieldTypeNames.ArtificialTurf },
                     new FieldType { Id = (long)FieldTypeIds.Grass, Name = FieldTypeNames.Grass },
                     new FieldType { Id = (long)FieldTypeIds.Tartan, Name = FieldTypeNames.Tartan },
-                    new FieldType { Id = (long)FieldTypeIds.Asphalt, Name = FieldTypeNames.Asphalt }
+                    new FieldType { Id = (long)FieldTypeIds.Asphalt, Name = FieldTypeNames.Asphalt },
+                    new FieldType { Id = (long)FieldTypeIds.Hall, Name = FieldTypeNames.Hall }
                 );
         }
     }

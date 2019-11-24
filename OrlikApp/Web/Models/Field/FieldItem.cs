@@ -13,6 +13,7 @@ namespace Web.Models.Field
         public string Description { get; set; }
         public bool AutoConfirm { get; set; }
         public string KeeperName { get; set; }
+        public long? KeeperId { get; set; }
         public List<WorkingTimeResponse> WorkingTime { get; set; }
     }
 }
