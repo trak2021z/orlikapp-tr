@@ -25,5 +25,13 @@ namespace Web.Models.Auth
         [EmailAddress(ErrorMessage = "Niepoprawny format adresu email")]
         [StringLength(250, ErrorMessage = "Email jest zbyt długi")]
         public string Email { get; set; }
+
+        [Required(ErrorMessage = "Imię jest wymagane")]
+        [StringLength(60, ErrorMessage = "Imię jest zbyt długie")]
+        public string FirstName { get; set; }
+
+        [Required(ErrorMessage = "Nazwisko jest wymagane")]
+        [StringLength(60, ErrorMessage = "Email jest zbyt długi")]
+        public string LastName { get; set; }
     }
 }

@@ -10,6 +10,6 @@ namespace BusinessLayer.Services.Interfaces
     public interface IAuthService
     {
         Task<AuthResponse> Authenticate(string login, string password);
-        Task<User> RegisterUser(string login, string password, string email);
+        Task<User> RegisterUser(RegisterModel model);
     }
 }

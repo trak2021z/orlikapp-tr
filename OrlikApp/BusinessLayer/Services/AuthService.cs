@@ -91,21 +91,23 @@ namespace BusinessLayer.Services
         #endregion
 
         #region RegisterUser()
-        public async Task<User> RegisterUser(string login, string password, string email)
+        public async Task<User> RegisterUser(RegisterModel model)
         {
             try
             {
-                await _userRepository.CheckUserUniqueFields(login, email);
+                await _userRepository.CheckUserUniqueFields(model.Login, model.Email);
                 var user = new User
                 {
-                    Login = login,
-                    Email = email,
+                    Login = model.Login,
+                    Email = model.Email,
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
                     DateCreated = DateTime.Now,
                     DateModified = DateTime.Now,
                     RoleId = (long)RoleIds.User
                 };
 
-                _hashService.CreatePasswordHash(password, out byte[] passwordHash, out byte[] passwordSalt);
+                _hashService.CreatePasswordHash(model.Password, out byte[] passwordHash, out byte[] passwordSalt);
 
                 user.PasswordHash = passwordHash;
                 user.PasswordSalt = passwordSalt;

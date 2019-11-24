@@ -68,7 +68,7 @@ namespace Web.Controllers
             try
             {
                 var x = request.Email;
-                var user = await _authService.RegisterUser(request.Login, request.Password, request.Email);
+                var user = await _authService.RegisterUser(_mapper.Map<RegisterModel>(request));
                 return Ok(new { user.Id, user.Login });
             }
             catch (BusinessLogicException e)
