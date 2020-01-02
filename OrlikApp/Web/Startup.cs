@@ -37,9 +37,12 @@ namespace Web
         public void ConfigureServices(IServiceCollection services)
         {
             // CORS
-            services.AddCors(options => options.AddPolicy("LocalhostPolicy", builder =>
+            services.AddCors(options => options.AddPolicy("AnyPolicy", builder =>
             {
-                builder.WithOrigins("http://localhost:8080").AllowAnyMethod().AllowAnyHeader();
+                //builder.WithOrigins("http://192.168.43.75:8080").AllowAnyMethod().AllowAnyHeader();
+                //builder.WithOrigins("192.168.43.1").AllowAnyMethod().AllowAnyHeader();
+                //builder.WithOrigins("http://localhost:8080").AllowAnyMethod().AllowAnyHeader();
+                builder.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader();
             }));
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
@@ -50,8 +53,8 @@ namespace Web
                     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             // Context
-            services.AddDbContext<OrlikAppContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DevConnection")));
+            services.AddDbContext<SRBContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("SRBConnection")));
 
             //AutoMapper
             services.AddAutoMapper();
@@ -103,7 +106,6 @@ namespace Web
             });
             #endregion
 
-            // Bussiness services
             services.AddScoped<IAuthService, AuthService>();
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IHashService, HashService>();
@@ -129,7 +131,7 @@ namespace Web
 
             app.UseAuthentication();
 
-            app.UseCors("LocalhostPolicy");
+            app.UseCors("AnyPolicy");
 
             app.UseHttpsRedirection();
             app.UseMvc();

@@ -11,7 +11,7 @@ namespace BusinessLayer.Entities
         [Key]
         public long Id { get; set; }
 
-        [Column(TypeName = "nvarchar(256)")]
+        [MaxLength(256)]
         public string Description { get; set; }
 
         [Required]

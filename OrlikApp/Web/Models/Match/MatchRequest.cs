@@ -14,7 +14,8 @@ namespace Web.Models.Match
 
         [Required]
         [FutureDate(ErrorMessage = "Wymagana data z przyszłości")]
-        [DateNotEarlierThan("EndOfJoiningDate", ErrorMessage = "Data startu nie może być wcześniejsza niż data zapisów")]
+        [DateNotEarlierThan("EndOfJoiningDate", 
+            ErrorMessage = "Data startu nie może być wcześniejsza niż data zapisów")]
         public DateTime? StartDate { get; set; }
 
         [Required]

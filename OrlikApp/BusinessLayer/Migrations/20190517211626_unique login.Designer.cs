@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusinessLayer.Migrations
 {
-    [DbContext(typeof(OrlikAppContext))]
+    [DbContext(typeof(SRBContext))]
     [Migration("20190517211626_unique login")]
     partial class uniquelogin
     {

@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusinessLayer.Migrations
 {
-    [DbContext(typeof(OrlikAppContext))]
+    [DbContext(typeof(SRBContext))]
     [Migration("20191010155205_Modify_WorkingTime_Field_Relation")]
     partial class Modify_WorkingTime_Field_Relation
     {

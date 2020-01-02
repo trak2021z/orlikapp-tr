@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusinessLayer.Migrations
 {
-    [DbContext(typeof(OrlikAppContext))]
+    [DbContext(typeof(SRBContext))]
     [Migration("20191009164119_AddMatchesAndMatchMemberTable")]
     partial class AddMatchesAndMatchMemberTable
     {

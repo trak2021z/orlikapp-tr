@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusinessLayer.Migrations
 {
-    [DbContext(typeof(OrlikAppContext))]
+    [DbContext(typeof(SRBContext))]
     [Migration("20191110101141_JoiningDate_As_SmallDateTime")]
     partial class JoiningDate_As_SmallDateTime
     {

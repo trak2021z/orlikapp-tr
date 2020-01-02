@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusinessLayer.Migrations
 {
-    [DbContext(typeof(OrlikAppContext))]
+    [DbContext(typeof(SRBContext))]
     [Migration("20190504181939_Initial")]
     partial class Initial
     {

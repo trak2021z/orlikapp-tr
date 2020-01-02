@@ -11,18 +11,18 @@ namespace BusinessLayer.Entities
         [Key]
         public long Id { get; set; }
 
-        [Column(TypeName = "nvarchar(60)")]
+        [MaxLength(64)]
         public string FirstName { get; set; }
 
-        [Column(TypeName = "nvarchar(60)")]
+        [MaxLength(64)]
         public string LastName { get; set; }
 
         [Required]
-        [Column(TypeName = "nvarchar(250)")]
+        [MaxLength(256)]
         public string Email { get; set; }
 
         [Required]
-        [Column(TypeName = "nvarchar(60)")]
+        [MaxLength(64)]
         public string Login { get; set; }
 
         public byte[] PasswordHash { get; set; }
@@ -42,19 +42,16 @@ namespace BusinessLayer.Entities
 
         public int? Weight { get; set; }
 
-        [Column(TypeName = "nvarchar(20)")]
+        [MaxLength(20)]
         public string PhoneNumber { get; set; }
 
-        [Column(TypeName = "nvarchar(120)")]
+        [MaxLength(128)]
         public string Street { get; set; }
 
         public int? StreetNumber { get; set; }
 
-        [Column(TypeName = "nvarchar(120)")]
+        [MaxLength(128)]
         public string City { get; set; }
-
-
-        //TODO: Avatar
 
         public long RoleId { get; set; }
 

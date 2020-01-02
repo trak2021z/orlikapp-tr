@@ -17,10 +17,10 @@ namespace BusinessLayer.Services
 {
     public class MatchMemberRepository : IMatchMemberRepository
     {
-        private readonly OrlikAppContext _context;
+        private readonly SRBContext _context;
         private readonly ILogger<MatchMemberRepository> _logger;
 
-        public MatchMemberRepository(OrlikAppContext context, ILogger<MatchMemberRepository> logger)
+        public MatchMemberRepository(SRBContext context, ILogger<MatchMemberRepository> logger)
         {
             _context = context;
             _logger = logger;

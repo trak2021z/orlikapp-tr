@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusinessLayer.Migrations
 {
-    [DbContext(typeof(OrlikAppContext))]
+    [DbContext(typeof(SRBContext))]
     [Migration("20191101141648_Edit_StartDate_And_EndOfJoiningDate_Format")]
     partial class Edit_StartDate_And_EndOfJoiningDate_Format
     {

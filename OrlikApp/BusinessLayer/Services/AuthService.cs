@@ -20,14 +20,14 @@ namespace BusinessLayer.Services
 {
     public class AuthService : IAuthService
     {
-        private readonly OrlikAppContext _context;
+        private readonly SRBContext _context;
         private readonly TokenSettings _tokenSettings;
         private readonly IUserRepository _userRepository;
         private readonly IHashService _hashService;
         private readonly ILogger<AuthService> _logger;
 
         public AuthService(
-            OrlikAppContext context, 
+            SRBContext context, 
             IOptions<TokenSettings> tokenSettings,
             IUserRepository userRepository,
             IHashService hashService,

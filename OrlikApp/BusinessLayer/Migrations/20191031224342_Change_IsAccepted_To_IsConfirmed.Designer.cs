@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusinessLayer.Migrations
 {
-    [DbContext(typeof(OrlikAppContext))]
+    [DbContext(typeof(SRBContext))]
     [Migration("20191031224342_Change_IsAccepted_To_IsConfirmed")]
     partial class Change_IsAccepted_To_IsConfirmed
     {

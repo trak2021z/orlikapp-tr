@@ -10,9 +10,9 @@ using BusinessLayer.Models.Field;
 
 namespace BusinessLayer.Contexts
 {
-    public class OrlikAppContext : DbContext
+    public class SRBContext : DbContext
     {
-        public OrlikAppContext(DbContextOptions<OrlikAppContext> options) : base(options)
+        public SRBContext(DbContextOptions<SRBContext> options) : base(options)
         {
 
         }

@@ -13,10 +13,10 @@ namespace BusinessLayer.Services
 {
     public class WorkingTimeRepository : IWorkingTimeRepository
     {
-        private readonly OrlikAppContext _context;
+        private readonly SRBContext _context;
         private readonly ILogger<WorkingTimeRepository> _logger;
 
-        public WorkingTimeRepository(OrlikAppContext context, ILogger<WorkingTimeRepository> logger)
+        public WorkingTimeRepository(SRBContext context, ILogger<WorkingTimeRepository> logger)
         {
             _context = context;
             _logger = logger;

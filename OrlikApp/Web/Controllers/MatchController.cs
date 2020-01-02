@@ -29,8 +29,12 @@ namespace Web.Controllers
         private readonly IUserRepository _userRepository;
         private readonly IMatchMemberRepository _matchMemberRepository;
 
-        public MatchController(IMapper mapper, IMatchRepository matchRepository, ILogger<MatchController> logger,
-            IUserRepository userRepository, IMatchMemberRepository matchMemberRepository)
+        public MatchController(
+            IMapper mapper,
+            IMatchRepository matchRepository, 
+            ILogger<MatchController> logger,
+            IUserRepository userRepository, 
+            IMatchMemberRepository matchMemberRepository)
         {
             _mapper = mapper;
             _matchRepository = matchRepository;

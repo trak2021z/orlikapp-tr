@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusinessLayer.Migrations
 {
-    [DbContext(typeof(OrlikAppContext))]
+    [DbContext(typeof(SRBContext))]
     [Migration("20191015185951_Add_FieldType_And_Modify_Field_Entity")]
     partial class Add_FieldType_And_Modify_Field_Entity
     {

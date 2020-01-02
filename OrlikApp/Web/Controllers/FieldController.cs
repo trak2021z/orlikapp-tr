@@ -55,13 +55,13 @@ namespace Web.Controllers
 
         #region List()
         [HttpGet("list")]
-        public async Task<ActionResult> GetPagedList([FromQuery]string street,
-                                                     [FromQuery]int? streetNumber,
+        public async Task<ActionResult> GetPagedList([FromQuery]string city,
+                                                     [FromQuery]string street,
                                                      [FromQuery]int page,
                                                      [FromQuery]int size)
         {
             var pager = new Pager(page, size);
-            var filter = new FieldSearch(street, streetNumber);
+            var filter = new FieldSearch(city, street);
 
             var pagedDBFields = await _fieldRepository.GetPagedList(filter, pager);
             var pagedResult = new PagedResult<FieldItem>

@@ -12,7 +12,7 @@ namespace BusinessLayer.Entities
         [Key]
         public long Id { get; set; }
 
-        [Column(TypeName = "nvarchar(120)")]
+        [MaxLength(128)]
         public string Name { get; set; }
 
         public List<User> Users { get; set; }

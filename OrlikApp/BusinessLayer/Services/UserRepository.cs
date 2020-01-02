@@ -19,11 +19,11 @@ namespace BusinessLayer.Services
 {
     public class UserRepository : IUserRepository
     {
-        private readonly OrlikAppContext _context;
+        private readonly SRBContext _context;
         private readonly IHashService _hashService;
         private readonly ILogger<UserRepository> _logger;
 
-        public UserRepository(OrlikAppContext context, IHashService hashService, ILogger<UserRepository> logger)
+        public UserRepository(SRBContext context, IHashService hashService, ILogger<UserRepository> logger)
         {
             _context = context;
             _hashService = hashService;

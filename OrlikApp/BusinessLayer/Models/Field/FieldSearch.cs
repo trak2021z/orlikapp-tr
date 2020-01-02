@@ -8,13 +8,13 @@ namespace BusinessLayer.Models.Field
 {
     public class FieldSearch
     {
+        public string City { get; private set; }
         public string Street { get; private set; }
-        public int? StreetNumber { get; private set; }
 
-        public FieldSearch(string street, int? streetNumber)
+        public FieldSearch(string city, string street)
         {
+            City = city;
             Street = street;
-            StreetNumber = streetNumber;
         }
     }
 }

@@ -19,13 +19,13 @@ namespace BusinessLayer.Services
 {
     public class FieldRepository : IFieldRepository
     {
-        private readonly OrlikAppContext _context;
+        private readonly SRBContext _context;
         private readonly ILogger<UserRepository> _logger;
         private readonly IUserRepository _userRepository;
         private readonly IWorkingTimeRepository _workingTimeRepository;
         private readonly IMatchMemberRepository _matchMemberRepository;
 
-        public FieldRepository(OrlikAppContext context, ILogger<UserRepository> logger,
+        public FieldRepository(SRBContext context, ILogger<UserRepository> logger,
             IUserRepository userRepository, IWorkingTimeRepository workingTimeRepository,
             IMatchMemberRepository matchMemberRepository)
         {
@@ -109,14 +109,14 @@ namespace BusinessLayer.Services
             {
                 var query = _context.Fields.AsNoTracking();
 
+                if (!string.IsNullOrEmpty(search.City))
+                {
+                    query = query.Where(f => f.City.Contains(search.City));
+                }
+
                 if (!string.IsNullOrEmpty(search.Street))
                 {
                     query = query.Where(f => f.Street.Contains(search.Street));
-
-                    if (search.StreetNumber.HasValue)
-                    {
-                        query = query.Where(f => f.StreetNumber == search.StreetNumber);
-                    }
                 }
 
                 var queryResultNumber = query.Count();

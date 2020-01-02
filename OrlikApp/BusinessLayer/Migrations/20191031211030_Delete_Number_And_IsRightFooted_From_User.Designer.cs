@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace BusinessLayer.Migrations
 {
-    [DbContext(typeof(OrlikAppContext))]
+    [DbContext(typeof(SRBContext))]
     [Migration("20191031211030_Delete_Number_And_IsRightFooted_From_User")]
     partial class Delete_Number_And_IsRightFooted_From_User
     {
