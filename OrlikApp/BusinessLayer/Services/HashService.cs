@@ -20,7 +20,7 @@ namespace BusinessLayer.Services
             using (var hmac = new System.Security.Cryptography.HMACSHA512())
             {
                 passwordSalt = hmac.Key;
-                passwordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password));
+                passwordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
             }
         }
         #endregion
@@ -35,11 +35,11 @@ namespace BusinessLayer.Services
             }
             if (storedHash.Length != 64)
             {
-                throw new ArgumentException("Nieodpowiednia długość Hash", "passwordHash");
+                throw new ArgumentException("Nieodpowiednia długość hash-u", "passwordHash");
             }
             if (storedSalt.Length != 128)
             {
-                throw new ArgumentException("Nieodpowiednia długość Salt.", "passwordHash");
+                throw new ArgumentException("Nieodpowiednia długość soli", "passwordHash");
             }
 
             using (var hmac = new System.Security.Cryptography.HMACSHA512(storedSalt))

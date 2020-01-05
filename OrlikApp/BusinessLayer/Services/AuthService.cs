@@ -45,9 +45,8 @@ namespace BusinessLayer.Services
         {
             try
             {
-                // TODO: create method in user repository
                 var user = await _context.Users.AsNoTracking().Include(u => u.Role)
-                    .FirstOrDefaultAsync(x => x.Login == login);
+                    .SingleOrDefaultAsync(x => x.Login == login);
 
                 if (user == null)
                 {
@@ -71,7 +70,8 @@ namespace BusinessLayer.Services
                         new Claim(ClaimTypes.Role, user.Role.Name)
                     }),
                     Expires = DateTime.Now.AddHours(6),
-                    SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                    SigningCredentials = 
+                        new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 };
                 var token = tokenHandler.CreateToken(tokenDescriptor);
                 var tokenString = tokenHandler.WriteToken(token);
