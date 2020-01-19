@@ -12,7 +12,11 @@ namespace Web.Models.Mapping
         public WorkingTimeProfile()
         {
             CreateMap<WorkingTimeRequest, BusinessLayer.Entities.WorkingTime>();
-            CreateMap<BusinessLayer.Entities.WorkingTime, WorkingTimeResponse>();
+            CreateMap<BusinessLayer.Entities.WorkingTime, WorkingTimeResponse>()
+                .ForMember(dest => dest.OpenHour,
+                    opt => opt.MapFrom(src => src.OpenHour.ToString(@"hh\:mm")))
+                .ForMember(dest => dest.CloseHour,
+                    opt => opt.MapFrom(src => src.CloseHour.ToString(@"hh\:mm")));
         }
     }
 }

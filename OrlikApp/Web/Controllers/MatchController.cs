@@ -47,11 +47,12 @@ namespace Web.Controllers
         [HttpGet("list")]
         public async Task<ActionResult> GetPagedList([FromQuery]long? fieldId,
                                                      [FromQuery]bool onlyUnconfirmed,
+                                                     [FromQuery]bool onlyOwn,
                                                      [FromQuery]int page,
                                                      [FromQuery]int size)
         {
             var pager = new Pager(page, size);
-            var filter = new MatchSearch(fieldId, onlyUnconfirmed);
+            var filter = new MatchSearch(fieldId, onlyUnconfirmed, onlyOwn);
 
             var pagedDBMatches = await _matchRepository.GetPagedList(filter, pager, User);
             var pagedResult = new PagedResult<MatchItem>

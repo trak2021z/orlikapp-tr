@@ -9,7 +9,7 @@ namespace Web.Models.WorkingTime
     {
         public int Day { get; set; }
         public string DayName { get; set; }
-        public TimeSpan OpenHour { get; set; }
-        public TimeSpan CloseHour { get; set; }
+        public string OpenHour { get; set; }
+        public string CloseHour { get; set; }
     }
 }

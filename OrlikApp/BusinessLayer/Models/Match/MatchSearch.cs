@@ -8,11 +8,13 @@ namespace BusinessLayer.Models.Match
     {
         public long? FieldId { get; private set; }
         public bool OnlyUnconfirmed { get; private set; }
+        public bool OnlyOwn { get; private set; }
 
-        public MatchSearch(long? fieldId, bool onlyUnconfirmed = false)
+        public MatchSearch(long? fieldId, bool onlyUnconfirmed = false, bool onlyOwn = false)
         {
             FieldId = fieldId;
             OnlyUnconfirmed = onlyUnconfirmed;
+            OnlyOwn = onlyOwn;
         }
     }
 }

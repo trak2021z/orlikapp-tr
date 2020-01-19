@@ -94,6 +94,7 @@ namespace BusinessLayer.Services
             try
             {
                 var query = _context.Matches.AsNoTracking();
+                var userId = long.Parse(loggedUser.Identity.Name);
 
                 if (search.FieldId.HasValue)
                 {
@@ -102,7 +103,16 @@ namespace BusinessLayer.Services
 
                 if (loggedUser.IsInRole(RoleNames.User))
                 {
-                    query = query.Where(m => m.IsConfirmed == true && m.StartDate > DateTime.Now);
+                    query = query.Where(m => m.IsConfirmed == true
+                                          && m.StartDate > DateTime.Now
+                                          && (m.WantedPlayersAmmount - m.MatchMembers.Count) > 0);
+
+                    if (search.OnlyOwn)
+                    {
+                        query = query.Include(m => m.MatchMembers);
+                        query = query.Where(m => m.FounderId == userId 
+                                              || m.MatchMembers.Any(mm => mm.PlayerId == userId));
+                    }
                 }
                 else if (loggedUser.IsInRole(RoleNames.FieldKeeper))
                 {
