@@ -14,7 +14,8 @@ namespace Web.Models.Mapping
         public UserProfile()
         {
             CreateMap<BusinessLayer.Entities.User, UserDetailsResponse>()
-                .ForMember(dest => dest.BirthDate, opt => opt.MapFrom(src => src.BirthDate.ToString()))
+                .ForMember(dest => dest.BirthDate, opt => 
+                    opt.MapFrom(src => src.BirthDate.HasValue ? src.BirthDate.Value.ToString("yyyy/MM/dd") : null))
                 .ForMember(dest => dest.RoleName, opt => opt.MapFrom(src => src.Role.Name));
 
             CreateMap<BusinessLayer.Entities.User, UserListItem>()

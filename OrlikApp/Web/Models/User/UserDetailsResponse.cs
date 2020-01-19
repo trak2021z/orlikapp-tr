@@ -17,5 +17,8 @@ namespace Web.Models.User
         public int? Weight { get; set; }
         public string PhoneNumber { get; set; }
         public string RoleName { get; set; }
+        public string City { get; set; }
+        public string Street { get; set; }
+        public int? StreetNumber { get; set; }
     }
 }
