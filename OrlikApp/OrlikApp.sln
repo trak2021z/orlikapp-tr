@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.572
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{F0D63B82-8785-43B5-8099-558AFE78A11E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessLayer", "BusinessLayer\BusinessLayer.csproj", "{87F1F1ED-A1F0-4D7D-9078-DC8130E27241}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLayer", "BusinessLayer\BusinessLayer.csproj", "{87F1F1ED-A1F0-4D7D-9078-DC8130E27241}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "IntegrationTests", "IntegrationTests\IntegrationTests.csproj", "{DFA4DE3E-B045-4A6A-A6A1-A2DB912DCEAD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{87F1F1ED-A1F0-4D7D-9078-DC8130E27241}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87F1F1ED-A1F0-4D7D-9078-DC8130E27241}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87F1F1ED-A1F0-4D7D-9078-DC8130E27241}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFA4DE3E-B045-4A6A-A6A1-A2DB912DCEAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFA4DE3E-B045-4A6A-A6A1-A2DB912DCEAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFA4DE3E-B045-4A6A-A6A1-A2DB912DCEAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFA4DE3E-B045-4A6A-A6A1-A2DB912DCEAD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
