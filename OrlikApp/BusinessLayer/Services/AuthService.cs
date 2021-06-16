@@ -38,6 +38,7 @@ namespace BusinessLayer.Services
             _userRepository = userRepository;
             _hashService = hashService;
             _logger = logger;
+            context.Database.EnsureCreated();
         }
 
         #region Authenticate()

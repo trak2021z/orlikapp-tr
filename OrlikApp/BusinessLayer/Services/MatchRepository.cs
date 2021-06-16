@@ -2,6 +2,7 @@
 using BusinessLayer.Entities;
 using BusinessLayer.Helpers;
 using BusinessLayer.Helpers.Pagination;
+using BusinessLayer.Models.Enums;
 using BusinessLayer.Models.Match;
 using BusinessLayer.Models.Role;
 using BusinessLayer.Services.Interfaces;
@@ -34,6 +35,12 @@ namespace BusinessLayer.Services
             _fieldRepository = fieldRepository;
             _workingTimeRepository = workingTimeRepository;
             _matchMemberRepository = matchMemberRepository;
+            context.Database.EnsureCreated();
+
+            if (!context.Fields.Any())
+            {
+                SeedDatabase();
+            }
         }
 
         #region Get()
@@ -120,7 +127,7 @@ namespace BusinessLayer.Services
                         .Where(m => m.Field.KeeperId == long.Parse(loggedUser.Identity.Name));
                 }
 
-                if (!loggedUser.IsInRole(RoleNames.User) && search.OnlyUnconfirmed)
+                if (search.OnlyUnconfirmed)
                 {
                     query = query.Where(m => m.IsConfirmed == false);
                 }
@@ -256,5 +263,53 @@ namespace BusinessLayer.Services
             }
         }
         #endregion
+
+        private void SeedDatabase()
+        {
+            var fields = new List<Field>
+            {
+                new Field 
+                {
+                    City = "Rzeszow",
+                    Street = "Lubelska",
+                    AutoConfirm = true,
+                    Id = 1,
+                    TypeId = (long)FieldTypeIds.ArtificialTurf,
+
+                },
+                new Field
+                {
+                    City = "Rzeszow",
+                    Street = "Warszawska",
+                    AutoConfirm = false,
+                    Id = 2,
+                    TypeId = (long)FieldTypeIds.Grass,
+
+                },
+            };
+            _context.Fields.AddRange(fields);
+
+            var workingTime = new List<WorkingTime>
+            {
+                new WorkingTime
+                {
+                    Id = 1,
+                    Day = DayOfWeek.Monday,
+                    OpenHour = TimeSpan.FromHours(8),
+                    CloseHour = TimeSpan.FromHours(22),
+                    FieldId = 1
+                },
+                new WorkingTime
+                {
+                    Id = 2,
+                    Day = DayOfWeek.Tuesday,
+                    OpenHour = TimeSpan.FromHours(10),
+                    CloseHour = TimeSpan.FromHours(22),
+                    FieldId = 2
+                },
+            };
+            _context.WorkingTimes.AddRange(workingTime);
+            _context.SaveChanges();
+        }
     }
 }

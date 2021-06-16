@@ -28,6 +28,7 @@ namespace BusinessLayer.Services
             _context = context;
             _hashService = hashService;
             _logger = logger;
+            context.Database.EnsureCreated();
         }
 
         #region Get()

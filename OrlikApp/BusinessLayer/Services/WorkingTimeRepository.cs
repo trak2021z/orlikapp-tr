@@ -20,6 +20,7 @@ namespace BusinessLayer.Services
         {
             _context = context;
             _logger = logger;
+            context.Database.EnsureCreated();
         }
 
         #region GetByFieldId()
@@ -75,6 +76,7 @@ namespace BusinessLayer.Services
         #endregion
 
         #region IsDateInFieldWorkingTime()
+        // TODO: Check also match end time
         public async Task<bool> IsDateInFieldWorkingTime(long fieldId, DateTime date)
         {
             var result = await _context.WorkingTimes.AsNoTracking()

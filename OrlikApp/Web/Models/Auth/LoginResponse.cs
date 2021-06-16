@@ -13,6 +13,8 @@ namespace Web.Models.Auth
         public string Email { get; set; }
         public string RoleName { get; set; }
 
+        public LoginResponse() { }
+
         public LoginResponse(BusinessLayer.Entities.User user, string token)
         {
             Id = user.Id;

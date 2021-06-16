@@ -19,6 +19,7 @@ namespace BusinessLayer.Services
         {
             _context = context;
             _logger = logger;
+            context.Database.EnsureCreated();
         }
 
         public async Task<IEnumerable<Role>> GetAll()

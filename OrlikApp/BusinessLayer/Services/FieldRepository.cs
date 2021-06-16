@@ -34,6 +34,7 @@ namespace BusinessLayer.Services
             _userRepository = userRepository;
             _workingTimeRepository = workingTimeRepository;
             _matchMemberRepository = matchMemberRepository;
+            context.Database.EnsureCreated();
         }
 
         #region Get()
