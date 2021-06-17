@@ -127,7 +127,7 @@ namespace IntegrationTests
             await CreateSampleMatch();
 
             // Act
-            var response = await TestClient.PostAsJsonAsync($"api/matches", new MatchRequest
+            var response = await TestClient.PostAsJsonAsync("api/matches", new MatchRequest
             {
                 Description = "",
                 StartDate = new DateTime(2021, 6, 25, 15, 0, 0),
@@ -153,7 +153,7 @@ namespace IntegrationTests
             await CreateSampleMatch();
 
             // Act
-            var response = await TestClient.PostAsJsonAsync($"api/matches", new MatchRequest
+            var response = await TestClient.PostAsJsonAsync("api/matches", new MatchRequest
             {
                 Description = "",
                 StartDate = new DateTime(2021, 6, 28, 21, 0, 0),
@@ -179,7 +179,7 @@ namespace IntegrationTests
             await CreateSampleMatch();
 
             // Act
-            var response = await TestClient.PostAsJsonAsync($"api/matches", new MatchRequest
+            var response = await TestClient.PostAsJsonAsync("api/matches", new MatchRequest
             {
                 Description = "",
                 StartDate = new DateTime(2021, 6, 28, 15, 30, 0),
